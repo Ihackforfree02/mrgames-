@@ -5,20 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>MR GAMES</title>
 
-  <!-- Favicons -->
-  <link rel="icon" type="image/png" href="favicon.png">
-  <link rel="apple-touch-icon" href="favicon.png">
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png" />
 
-  <!-- Google / Analytics / Ads -->
+  <!-- Google Ads / Analytics -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5521219086088837" crossorigin="anonymous"></script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-WX5VS54ZDW"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){ dataLayer.push(arguments); }
+    function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     gtag('config', 'G-WX5VS54ZDW');
   </script>
-  <meta name="google-adsense-account" content="ca-pub-5521219086088837">
 
   <!-- Styles -->
   <style>
@@ -30,13 +28,11 @@
       overflow-x: hidden;
     }
     header {
-      background: rgba(0,0,0,0.6);
-      padding: 15px;
       display: flex; justify-content: space-between; align-items: center;
+      background: rgba(0,0,0,0.6); padding: 15px;
     }
     .logo {
-      font-size: 2rem; font-weight: bold;
-      color: #f0db4f;
+      font-size: 2rem; font-weight: bold; color: #f0db4f;
       text-shadow: 0 0 10px #f0db4f, 0 0 20px #f0db4f;
       animation: glow 1.5s ease-in-out infinite alternate;
     }
@@ -49,16 +45,14 @@
       padding: 8px; border-radius: 6px; border: none; outline: none;
     }
     .control-buttons button {
-      background-color: #00ffff; color: #0f2027;
-      border: none; border-radius: 8px;
-      padding: 0.5rem 1rem; cursor: pointer;
-      font-weight: bold;
+      background: #00ffff; color: #0f2027; border: none;
+      padding: 8px 16px; border-radius: 8px; cursor: pointer;
     }
     main { padding: 20px; }
     details { margin-bottom: 20px; }
     summary { cursor: pointer; font-size: 1.2rem; font-weight: bold; }
 
-    /* Game cards */
+    /* Game grid */
     .zone-container {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -66,61 +60,61 @@
     }
     .zone-card {
       background: rgba(0,0,0,0.5);
-      border-radius: 12px;
-      overflow: hidden;
-      text-align: center;
-      padding: 10px;
-      cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.3s;
+      border-radius: 12px; padding: 10px;
+      cursor: pointer; text-align: center;
+      transition: transform .2s, box-shadow .3s;
     }
     .zone-card img {
-      width: 100%;
-      height: 120px;
-      object-fit: cover;
-      border-radius: 8px;
+      width: 100%; height: 120px; object-fit: cover; border-radius: 8px;
     }
     .zone-card:hover {
       transform: scale(1.05);
       box-shadow: 0 0 20px #00ffff;
     }
-    .zone-card h3 {
-      margin: 8px 0 0;
-      font-size: 1rem;
-      color: #fff;
-    }
+    .zone-card h3 { margin: 8px 0 0; font-size: 1rem; }
 
-    /* Zone viewer */
+    /* Zone Viewer */
     #zoneViewer {
       display: none; flex-direction: column;
       position: fixed; top: 5%; left: 5%; right: 5%; bottom: 5%;
-      background: #111; border-radius: 10px;
-      box-shadow: 0 0 30px rgba(0,0,0,0.7);
-      z-index: 100; padding: 10px;
-      animation: fadeIn 0.3s ease-out;
+      background: #111; border-radius: 12px;
+      box-shadow: 0 0 30px rgba(0,0,0,0.7); z-index: 1000;
+      animation: fadeIn .3s ease-out;
     }
-    @keyframes fadeIn { from {opacity:0; transform:scale(0.95);} to {opacity:1; transform:scale(1);} }
-    #zoneFrame { width: 100%; height: calc(100% - 60px); border: none; border-radius: 8px; }
+    @keyframes fadeIn { from{opacity:0; transform:scale(.95);} to{opacity:1; transform:scale(1);} }
+    #zoneFrame { flex: 1; border: none; border-radius: 8px; }
+    .zone-controls { padding: 8px; text-align: right; }
     .zone-controls button {
-      margin-left: 5px; padding: 5px 10px;
-      border: none; border-radius: 6px; cursor: pointer;
-      background: #00ffff; color: #0f2027;
+      margin-left: 5px; padding: 5px 12px; border: none; border-radius: 6px;
+      background: #00ffff; color: #0f2027; cursor: pointer;
     }
 
     /* Rain */
-    .rain-wrapper { pointer-events:none; position:fixed; top:0; left:0; width:100vw; height:100vh; z-index:5; }
-    .raindrop { position:absolute; top:-20px; width:2px; background:linear-gradient(180deg,#00ffff,#0077aa); opacity:.6; animation:fall linear infinite; }
+    .rain-wrapper { pointer-events: none; position: fixed; top:0; left:0; width:100%; height:100%; z-index: 5; }
+    .raindrop { position: absolute; top:-20px; width:2px;
+      background: linear-gradient(180deg,#00ffff,#0077aa);
+      opacity: .6; animation: fall linear infinite;
+    }
     @keyframes fall { to { transform: translateY(110vh); opacity: 0; } }
 
-    /* Chat & partner */
-    #chat-toggle { position:fixed; bottom:20px; left:20px; background:#0078D7; color:white; padding:10px 15px; border-radius:20px; cursor:pointer; z-index:1000; box-shadow:0 0 10px #0078D7; }
-    .partner-badge { position:fixed; bottom:20px; right:20px; background:linear-gradient(135deg,#00ffff,#0078D7); color:#0f2027; padding:10px 20px; border-radius:30px; font-weight:bold; text-decoration:none; box-shadow:0 0 15px #00ffff; }
-    .partner-badge:hover { transform:scale(1.05); box-shadow:0 0 25px #00ffff; color:#fff; }
+    /* Chat + Partner */
+    #chat-toggle { position: fixed; bottom: 20px; left: 20px;
+      background: #0078D7; color: #fff; padding: 10px 15px;
+      border-radius: 20px; cursor: pointer; box-shadow: 0 0 10px #0078D7;
+    }
+    .partner-badge { position: fixed; bottom: 20px; right: 20px;
+      background: linear-gradient(135deg,#00ffff,#0078D7);
+      color:#0f2027; padding:10px 20px; border-radius:30px;
+      text-decoration:none; font-weight: bold;
+      box-shadow: 0 0 15px #00ffff; transition: .3s;
+    }
+    .partner-badge:hover { transform: scale(1.05); color: #fff; box-shadow:0 0 25px #00ffff; }
 
-    footer { margin-top:30px; padding:15px; background:rgba(0,0,0,0.7); text-align:center; }
-    footer a { color:#00ffff; margin:0 10px; text-decoration:none; }
+    footer { margin-top: 30px; padding: 15px; background: rgba(0,0,0,0.7); text-align: center; }
+    footer a { color: #00ffff; margin: 0 10px; text-decoration: none; }
   </style>
 </head>
-<body class="dark-mode">
+<body>
   <!-- Rain -->
   <div class="rain-wrapper" id="rain-wrapper"></div>
 
@@ -136,7 +130,7 @@
       </select>
     </div>
     <div class="control-buttons">
-      <button id="settings-btn">Settings</button>
+      <button id="settings">Settings</button>
     </div>
   </header>
 
@@ -153,15 +147,12 @@
     </details>
   </main>
 
-  <!-- Zone Viewer -->
+  <!-- Viewer -->
   <div id="zoneViewer">
-    <div class="zone-header">
-      <h2 id="zoneName">Game</h2>
-      <div class="zone-controls">
-        <button onclick="fullscreenZone()">Fullscreen</button>
-        <button onclick="aboutBlank()">New Tab</button>
-        <button onclick="closeZone()">Close</button>
-      </div>
+    <div class="zone-controls">
+      <button onclick="fullscreenZone()">Fullscreen</button>
+      <button onclick="aboutBlank()">New Tab</button>
+      <button onclick="closeZone()">Close</button>
     </div>
     <iframe id="zoneFrame"></iframe>
   </div>
@@ -172,54 +163,80 @@
     <a href="#">Privacy</a>
   </footer>
 
-  <!-- Chat & Partner -->
+  <!-- Chat + Partner -->
   <div id="chat-toggle" onclick="toggleChat()">💬 Chat</div>
   <a href="https://ezunblocktheopps.github.io/" class="partner-badge" target="_blank">🤝 Partnered with Sigmi</a>
 
   <!-- Scripts -->
+  <script src="cloak_panic.js"></script>
   <script>
-    // Example games (replace/add more as needed)
+    // Example game list restored from first file
     const games = [
-      {name:"Retro Bowl", img:"images/retro-bowl.png", url:"/games/retrobowl/index.html"},
-      {name:"1v1.LOL", img:"images/1v1lol.png", url:"/games/1v1lol/index.html"},
+      {name:"Retro Bowl", img:"images/retro-bowl.png", url:"/games/retrobowl/index.html", featured:true},
+      {name:"1v1.LOL", img:"images/1v1lol.png", url:"/games/1v1lol/index.html", featured:true},
+      {name:"Slope", img:"images/slope.png", url:"/games/slope/index.html", featured:true},
+      {name:"Run 3", img:"images/run3.png", url:"/games/run3/index.html"},
       {name:"Minecraft", img:"images/minecraft.png", url:"/games/minecraft/index.html"},
-      {name:"Slope", img:"images/slope.png", url:"/games/slope/index.html"},
-      {name:"Run 3", img:"images/run3.png", url:"/games/run3/index.html"}
+      {name:"Cookie Clicker", img:"images/cookie.png", url:"/games/cookie/index.html"},
+      {name:"Basketball Stars", img:"images/basketball-stars.png", url:"/games/basketball-stars/index.html"},
+      {name:"Drift Hunters", img:"images/drift-hunters.png", url:"/games/drift-hunters/index.html"},
+      {name:"Drive Mad", img:"images/drive-mad.png", url:"/games/drive-mad/index.html"},
+      {name:"Tetris", img:"images/tetris.png", url:"/games/tetris/index.html"},
+      // ⬆️ Add back all games/images from your original file here
     ];
 
     function loadGames() {
-      const container = document.getElementById("allZones");
-      const featured = document.getElementById("featuredZones");
-      container.innerHTML = "";
-      featured.innerHTML = "";
-      games.forEach((g,i)=>{
+      const all = document.getElementById("allZones");
+      const feat = document.getElementById("featuredZones");
+      all.innerHTML = ""; feat.innerHTML = "";
+      games.forEach(g=>{
         const card = document.createElement("div");
-        card.className = "zone-card";
-        card.innerHTML = `<img src="${g.img}" alt="${g.name}"><h3>${g.name}</h3>`;
-        card.onclick = ()=>openZone(g);
-        if(i<3) featured.appendChild(card.cloneNode(true));
-        container.appendChild(card);
+        card.className="zone-card";
+        card.innerHTML=`<img src="${g.img}" alt="${g.name}"><h3>${g.name}</h3>`;
+        card.onclick=()=>openZone(g);
+        all.appendChild(card);
+        if(g.featured) feat.appendChild(card.cloneNode(true));
       });
     }
 
-    function openZone(game) {
-      document.getElementById("zoneName").innerText = game.name;
-      document.getElementById("zoneFrame").src = game.url;
-      document.getElementById("zoneViewer").style.display = "flex";
+    function filterZones(){
+      const query=document.getElementById("searchBar").value.toLowerCase();
+      const all=document.getElementById("allZones").children;
+      for(let card of all){
+        card.style.display=card.innerText.toLowerCase().includes(query)?"block":"none";
+      }
     }
-    function closeZone(){ document.getElementById("zoneViewer").style.display="none"; document.getElementById("zoneFrame").src=""; }
-    function fullscreenZone(){ document.getElementById("zoneFrame").requestFullscreen(); }
-    function aboutBlank(){ window.open(document.getElementById("zoneFrame").src,"_blank"); }
+    function sortZones(){
+      const opt=document.getElementById("sortOptions").value;
+      if(opt==="name"){games.sort((a,b)=>a.name.localeCompare(b.name));}
+      if(opt==="id"){games.sort((a,b)=>a.url.localeCompare(b.url));}
+      if(opt==="popular"){games.sort((a,b)=> (b.featured?1:0)-(a.featured?1:0));}
+      loadGames();
+    }
+
+    function openZone(game){
+      document.getElementById("zoneFrame").src=game.url;
+      document.getElementById("zoneViewer").style.display="flex";
+    }
+    function closeZone(){document.getElementById("zoneViewer").style.display="none";document.getElementById("zoneFrame").src="";}
+    function fullscreenZone(){document.getElementById("zoneFrame").requestFullscreen();}
+    function aboutBlank(){window.open(document.getElementById("zoneFrame").src,"_blank");}
 
     function toggleChat(){
       if(window.chatWindow && !window.chatWindow.closed){window.chatWindow.focus();}
       else{window.chatWindow=window.open("https://forum.whatthesigma.site/home","ChatWindow","width=400,height=600");}
     }
 
-    // Rain effect
+    // Rain
     const rainWrapper=document.getElementById("rain-wrapper");
-    for(let i=0;i<80;i++){const drop=document.createElement("div");drop.classList.add("raindrop");drop.style.left=Math.random()*100+"vw";drop.style.height=10+Math.random()*15+"px";drop.style.animationDuration=1.5+Math.random()*2+"s";drop.style.width="2px";rainWrapper.appendChild(drop);}
-    
+    for(let i=0;i<100;i++){
+      const drop=document.createElement("div");drop.className="raindrop";
+      drop.style.left=Math.random()*100+"vw";
+      drop.style.height=10+Math.random()*15+"px";
+      drop.style.animationDuration=1.5+Math.random()*2+"s";
+      rainWrapper.appendChild(drop);
+    }
+
     loadGames();
   </script>
 </body>
