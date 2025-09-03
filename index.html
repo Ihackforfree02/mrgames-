@@ -1,435 +1,140 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>MR GAMES — Ultimate Hub</title>
-
-  <!-- Use original repo base so OG thumbnails resolve same as before -->
-  <base href="https://cdn.jsdelivr.net/gh/gn-math/gn-math.github.io@main/">
-
-  <link rel="icon" type="image/png" href="favicon.png">
-  <meta name="description" content="MR GAMES — Play featured, trending and classic web games.">
-  <meta name="google-adsense-account" content="ca-pub-5521219086088837">
-
-  <!-- Keep original analytics & ads -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5521219086088837" crossorigin="anonymous"></script>
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-WX5VS54ZDW"></script>
-  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-WX5VS54ZDW');</script>
-
-  <!-- Original game scripts (kept to preserve OG list & behavior) -->
-  <script src="https://cdn.jsdelivr.net/gh/gn-math/gn-math.github.io@main/gnmath.js" defer></script>
-  <script src="https://cdn.jsdelivr.net/gh/gn-math/gn-math.github.io@main/script.js" defer></script>
-
-  <!-- Cloak panic -->
-  <script src="cloak_panic.js" defer></script>
-
-  <style>
-  :root{
-    --accent:#00ffff; --accent2:#0078D7; --neon:#f0db4f;
-    --bg-a:#0f2027; --bg-b:#203a43; --bg-c:#2c5364;
-    --card: rgba(6,8,10,0.6);
-  }
-  *{box-sizing:border-box}
-  html,body{height:100%;margin:0;font-family:Segoe UI, Tahoma, Geneva, Verdana, sans-serif;color:#fff;background:linear-gradient(90deg,var(--bg-a),var(--bg-b),var(--bg-c));-webkit-font-smoothing:antialiased}
-  header{position:sticky;top:0;background:rgba(0,0,0,0.48);backdrop-filter:blur(6px);padding:12px 16px;display:flex;align-items:center;gap:12px;z-index:70;border-bottom:1px solid rgba(255,255,255,0.04)}
-  .logo{font-weight:900;font-size:1.6rem;color:var(--neon);text-shadow:0 0 8px var(--neon);animation:glow 1.6s ease-in-out infinite alternate; user-select:none}
-  @keyframes glow{from{text-shadow:0 0 6px var(--neon)} to{text-shadow:0 0 16px var(--neon),0 0 28px var(--neon)}}
-  .search-area{flex:1;display:flex;gap:10px;align-items:center}
-  .searchbar{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.03);padding:8px;border-radius:12px;border:1px solid rgba(255,255,255,0.04);flex:1}
-  .searchbar input{background:transparent;border:0;color:inherit;padding:8px;flex:1;outline:none}
-  .searchbar select{background:transparent;border:0;color:inherit;padding:8px;border-left:1px solid rgba(255,255,255,0.04);min-width:120px}
-  .btn{background:var(--accent);color:#0f2027;border:0;padding:8px 12px;border-radius:10px;font-weight:800;cursor:pointer;box-shadow:0 0 12px var(--accent)}
-  main{padding:18px;max-width:1200px;margin:0 auto}
-  details{background:var(--card);border-radius:12px;margin:12px 0;border:1px solid rgba(255,255,255,0.04)}
-  summary{padding:12px 14px;cursor:pointer;font-weight:800}
-  .zone-container{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;padding:12px}
-  .zone-card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:12px;overflow:hidden;position:relative;border:1px solid rgba(255,255,255,0.03);transition:transform .14s,box-shadow .18s}
-  .zone-card:hover{transform:translateY(-6px);box-shadow:0 14px 30px rgba(0,0,0,0.6),0 0 28px var(--accent)}
-  .zone-card img{width:100%;height:120px;object-fit:cover;background:#000;display:block}
-  .zone-meta{padding:10px;display:flex;align-items:center;justify-content:space-between;gap:8px}
-  .zone-title{font-weight:800;font-size:0.95rem}
-  .badges{display:flex;gap:6px}
-  .badge{font-weight:800;font-size:0.72rem;padding:4px 8px;border-radius:999px;background:rgba(0,255,255,0.08);color:#dff}
-  .fav-btn{position:absolute;top:8px;right:8px;border-radius:999px;padding:6px;border:none;background:rgba(0,0,0,0.36);color:var(--accent);cursor:pointer}
-  .desc{font-size:0.82rem;color:rgba(255,255,255,0.8);margin-top:6px}
-  /* viewer overlay */
-  #zoneViewer{display:none;position:fixed;inset:5%;z-index:1200;background:#071017;border-radius:14px;box-shadow:0 30px 80px rgba(0,0,0,0.7);overflow:hidden;display:flex;flex-direction:column}
-  .zone-header{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border-bottom:1px solid rgba(255,255,255,0.04)}
-  .zone-header h2{margin:0;font-size:1.15rem}
-  .zone-controls{display:flex;gap:8px}
-  .zone-controls button{background:var(--accent);border:0;padding:8px 12px;border-radius:10px;color:#0f2027;font-weight:800;cursor:pointer}
-  #zoneFrame{flex:1;border:0}
-  /* trending strip */
-  .strip{display:flex;gap:12px;overflow:auto;padding:12px;border-radius:8px}
-  .strip .zone-card{min-width:220px;flex:0 0 220px}
-  /* rain */
-  .rain-wrapper{pointer-events:none;position:fixed;inset:0;z-index:40}
-  .raindrop{position:absolute;top:-30px;width:2px;background:linear-gradient(180deg,var(--accent),#0077aa);opacity:0.6;border-radius:2px;animation:fall linear infinite}
-  @keyframes fall{to{transform:translateY(110vh);opacity:0}}
-  footer{padding:22px;text-align:center;color:#cfe}
-  .partner-badge{position:fixed;bottom:20px;right:20px;padding:10px 18px;border-radius:999px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#0f2027;font-weight:900;box-shadow:0 0 16px var(--accent);z-index:1000;text-decoration:none}
-  #chat-toggle{position:fixed;bottom:20px;left:20px;padding:10px 14px;border-radius:20px;background:var(--accent2);color:#fff;z-index:1000;cursor:pointer}
-  #settings-panel{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%) scale(0);background: rgba(0,0,0,0.78);padding:18px;border-radius:12px;z-index:1300;transition:transform .22s}
-  #settings-panel.open{transform:translate(-50%,-50%) scale(1)}
-  @media (max-width:720px){ .zone-card img{height:100px} .strip .zone-card{min-width:160px;flex:0 0 160px} .searchbar select{display:none} }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MR GAMES</title>
+<link rel="icon" href="favicon.ico">
+<style>
+/* Reset & Base */
+body, html { margin:0; padding:0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(to right,#0f2027,#203a43,#2c5364); color:#fff; overflow-x:hidden;}
+h1 { font-size:3rem; text-align:center; margin:20px 0; color:#f0db4f; text-shadow:0 0 10px #f0db4f,0 0 20px #f0db4f; animation: glow 1.5s infinite alternate; }
+@keyframes glow { from {text-shadow:0 0 5px #f0db4f;} to {text-shadow:0 0 20px #f0db4f,0 0 30px #f0db4f;} }
+.container { max-width:1200px; margin:auto; padding:20px; display:flex; flex-wrap:wrap; justify-content:center; gap:20px; }
+.game-card { background:rgba(0,0,0,0.6); border-radius:12px; overflow:hidden; width:200px; text-align:center; box-shadow:0 6px 20px rgba(0,0,0,0.5); transition: transform 0.3s, box-shadow 0.3s; cursor:pointer; }
+.game-card:hover { transform:translateY(-5px); box-shadow:0 12px 30px rgba(0,255,255,0.7);}
+.game-card img { width:100%; height:150px; object-fit:cover;}
+.game-card h3 { margin:10px 0 5px; font-size:1.2rem; color:#00ffff;}
+.game-card p { font-size:0.9rem; color:#fff; margin-bottom:10px;}
+#searchBar { width:300px; padding:10px; margin:20px auto; display:block; border-radius:10px; border:none; font-size:1rem;}
+nav { text-align:center; margin-bottom:20px;}
+nav a { display:inline-block; margin:0 10px; padding:10px 20px; border:2px solid #00ffff; border-radius:30px; color:#00ffff; text-decoration:none; transition:0.3s; }
+nav a:hover { background:#00ffff; color:#0f2027; box-shadow:0 0 20px #00ffff;}
+#chat-toggle { position:fixed; bottom:20px; left:20px; background:#0078D7; color:#fff; padding:10px 15px; border-radius:20px; cursor:pointer; box-shadow:0 0 10px #0078D7; z-index:1000;}
+.rain-wrapper { pointer-events:none; position:fixed; top:0; left:0; width:100vw; height:100vh; overflow:visible; z-index:5;}
+.raindrop { position:absolute; top:-20px; width:2px; background:linear-gradient(180deg,#00ffff,#0077aa); border-radius:50%/40%; opacity:0.6; animation: fall linear infinite;}
+@keyframes fall { to { transform: translateY(110vh); opacity:0; } }
+.settings-button { position:fixed; top:15px; right:15px; background:#00ffff; color:#0f2027; border:none; border-radius:50px; padding:10px 20px; font-weight:bold; cursor:pointer; box-shadow:0 0 12px #00ffff; }
+.settings-button:hover { box-shadow:0 0 20px #00ffff; }
+.partner-badge { position:fixed; bottom:20px; right:20px; background:linear-gradient(135deg,#00ffff,#0078D7); color:#0f2027; padding:10px 20px; border-radius:30px; font-size:1rem; font-weight:bold; text-decoration:none; box-shadow:0 0 15px #00ffff; z-index:1000; transition:all 0.3s ease;}
+.partner-badge:hover { box-shadow:0 0 25px #00ffff; transform:scale(1.05); color:#fff;}
+footer { text-align:center; margin:40px 0 20px; color:#00ffff;}
+</style>
 </head>
 <body>
-  <!-- rain container -->
-  <div id="rain-wrapper" class="rain-wrapper" aria-hidden="true"></div>
 
-  <!-- header -->
-  <header>
-    <div class="logo">MR GAMES</div>
-    <div class="search-area">
-      <div class="searchbar" role="search">
-        <input id="searchBar" placeholder="Search games, tags, authors... (press / to focus)">
-        <select id="sortOptions"><option value="relevance">Relevance</option><option value="name">Name</option><option value="new">Newest</option><option value="popular">Popular</option></select>
-      </div>
-      <button id="open-settings" class="btn">Settings</button>
-    </div>
-  </header>
+<h1>MR GAMES</h1>
+<input type="text" id="searchBar" placeholder="Search games..." oninput="filterGames()">
 
-  <!-- top ad -->
-  <div style="max-width:1100px;margin:12px auto">
-    <ins class="adsbygoogle" style="display:block;text-align:center" data-ad-client="ca-pub-5521219086088837" data-ad-slot="5549138288" data-ad-format="auto" data-full-width-responsive="true"></ins>
-    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+<nav>
+<a href="#">Play</a>
+<a href="#">Leaderboard</a>
+<a href="#">About</a>
+<a href="#">Records</a>
+<a href="#">Useful Links</a>
+<a href="Clash.html">Clash Picker</a>
+</nav>
+
+<div class="container" id="gamesContainer">
+  <!-- Original games -->
+  <div class="game-card" data-name="Hollow Knight">
+    <img src="images/hollow_knight.jpg" alt="Hollow Knight">
+    <h3>Hollow Knight</h3>
+    <p>Epic exploration of Hallownest.</p>
   </div>
-
-  <main>
-    <!-- trending -->
-    <section style="max-width:1200px;margin:0 auto 12px">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
-        <h3 style="margin:0">🔥 Trending</h3>
-        <div style="color:rgba(255,255,255,0.7)">Hot right now</div>
-      </div>
-      <div id="trendingStrip" class="strip"></div>
-    </section>
-
-    <section style="max-width:1200px;margin:0 auto">
-      <details id="featuredZonesWrapper" open>
-        <summary>Featured Games</summary>
-        <div id="featuredZones" class="zone-container"></div>
-      </details>
-
-      <br><hr style="border-color:rgba(255,255,255,0.06)"><br>
-
-      <details id="allZonesWrapper" open>
-        <summary>All Games</summary>
-        <!-- 'container' preserved for original script -->
-        <div id="container" class="zone-container">Loading games…</div>
-      </details>
-    </section>
-
-    <!-- recent -->
-    <section style="max-width:1200px;margin:18px auto">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-        <h3 style="margin:0">🕘 Recently Played</h3>
-        <div style="color:rgba(255,255,255,0.7);font-weight:700">Quick access</div>
-      </div>
-      <div id="recentStrip" class="strip"></div>
-    </section>
-  </main>
-
-  <!-- viewer overlay -->
-  <div id="zoneViewer" role="dialog" aria-hidden="true">
-    <div class="zone-header">
-      <div>
-        <h2 id="zoneName">Game</h2>
-        <div style="font-size:12px;color:rgba(255,255,255,0.75)" id="zoneSub"></div>
-      </div>
-      <div class="zone-controls">
-        <button id="play-btn" onclick="playInOverlay()">Play</button>
-        <button onclick="fullscreenZone()">Fullscreen</button>
-        <button onclick="aboutBlank()">Open in New Tab</button>
-        <button onclick="downloadZone()">Download</button>
-        <button onclick="closeZone()">Close</button>
-      </div>
-    </div>
-    <iframe id="zoneFrame" title="Game frame" sandbox="allow-scripts allow-same-origin allow-forms allow-pointer-lock"></iframe>
+  <div class="game-card" data-name="Undertale">
+    <img src="images/undertale.jpg" alt="Undertale">
+    <h3>Undertale</h3>
+    <p>Choose your path and impact the story.</p>
   </div>
-
-  <!-- popup overlay preserved -->
-  <div id="popupOverlay" style="display:none">
-    <div class="popup">
-      <div class="popup-header">
-        <h3 id="popupTitle">Title</h3>
-        <button id="popupClose" onclick="closePopup()">×</button>
-      </div>
-      <div id="popupBody">Content will be here</div>
-    </div>
+  <div class="game-card" data-name="Crazy Cattle 3D">
+    <img src="images/crazy_cattle_3d.jpg" alt="Crazy Cattle 3D">
+    <h3>Crazy Cattle 3D</h3>
+    <p>Fast-paced 3D fun!</p>
   </div>
-
-  <footer>
-    <a href="#" onclick="showContact?.();return false">Contact</a> · <a href="#" onclick="loadPrivacy?.();return false">Privacy</a> · <a href="javascript:saveData?.()">Export</a>
-    <input id="importData" type="file" style="display:none" onchange="loadData?.(event)">
-  </footer>
-
-  <!-- chat & partner -->
-  <div id="chat-toggle" onclick="toggleChat()" title="Chat">💬</div>
-  <a class="partner-badge" href="https://ezunblocktheopps.github.io/" target="_blank" rel="noopener">🤝 Partnered</a>
-
-  <!-- settings panel -->
-  <div id="settings-panel">
-    <h3>Settings</h3>
-    <div style="margin:8px 0"><label><input id="toggleRain" type="checkbox" checked> Rain effect</label></div>
-    <div style="margin:8px 0"><label><input id="toggleDark" type="checkbox"> Slight dark mode</label></div>
-    <div style="margin:8px 0"><label><input id="toggleCompact" type="checkbox"> Compact layout</label></div>
-    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:10px">
-      <button id="close-settings" class="btn">Close</button>
-      <button id="reset-settings" class="btn" style="background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--accent)">Reset</button>
-    </div>
+  <!-- Popular Steam & Indie Games -->
+  <div class="game-card" data-name="Celeste">
+    <img src="images/celeste.jpg" alt="Celeste">
+    <h3>Celeste</h3>
+    <p>Climb the mountain in this challenging platformer.</p>
   </div>
+  <div class="game-card" data-name="Stardew Valley">
+    <img src="images/stardew_valley.jpg" alt="Stardew Valley">
+    <h3>Stardew Valley</h3>
+    <p>Farm, mine, and socialize in this relaxing sim.</p>
+  </div>
+  <div class="game-card" data-name="Among Us">
+    <img src="images/among_us.jpg" alt="Among Us">
+    <h3>Among Us</h3>
+    <p>Find the impostor in multiplayer fun.</p>
+  </div>
+  <div class="game-card" data-name="Pac-Man">
+    <img src="images/pacman.jpg" alt="Pac-Man">
+    <h3>Pac-Man</h3>
+    <p>Classic arcade maze game.</p>
+  </div>
+  <div class="game-card" data-name="Tetris">
+    <img src="images/tetris.jpg" alt="Tetris">
+    <h3>Tetris</h3>
+    <p>Stack blocks strategically.</p>
+  </div>
+</div>
 
-  <!-- enhancement script (does the fixing/patching/pizzazz) -->
-  <script>
-  // ---------- Helpers ----------
-  const $ = (sel, root=document) => root.querySelector(sel);
-  const $$ = (sel, root=document) => Array.from((root||document).querySelectorAll(sel));
-  const placeholderDataURI = 'data:image/svg+xml;utf8,' + encodeURIComponent(
-    '<svg xmlns="http://www.w3.org/2000/svg" width="480" height="320"><rect width="100%" height="100%" fill="#0b0f12"/><text x="50%" y="50%" fill="#7fb" font-size="20" font-family="Segoe UI, Arial" text-anchor="middle" dominant-baseline="central">No thumbnail</text></svg>'
-  );
+<div id="chat-toggle" onclick="toggleChat()">💬 Chat</div>
+<div class="rain-wrapper" id="rain-wrapper"></div>
+<button class="settings-button" onclick="openSettings()">⚙️ Settings</button>
+<a href="https://ezunblocktheopps.github.io/" class="partner-badge" target="_blank">🤝 Partnered with Sigmi</a>
 
-  // ---------- Rain builder ----------
-  (function buildRain(){
-    const wrap = document.getElementById('rain-wrapper');
-    if(!wrap) return;
-    for(let i=0;i<100;i++){
-      const d = document.createElement('div'); d.className = 'raindrop';
-      const left = Math.random()*100; const size = 1 + Math.random()*2;
-      const dur = (1.2 + Math.random()*3).toFixed(2), delay = (Math.random()*8).toFixed(2);
-      d.style.left = left + 'vw'; d.style.width = size + 'px'; d.style.height = (8+size*6) + 'px';
-      d.style.animationDuration = dur + 's'; d.style.animationDelay = delay + 's';
-      wrap.appendChild(d);
-    }
-  })();
+<footer>&copy; 2025 MR GAMES - All rights reserved</footer>
 
-  // ---------- Settings ----------
-  const settings = {
-    key:'mg_settings',
-    elPanel: null,
-    init(){
-      this.elPanel = document.getElementById('settings-panel');
-      const s = JSON.parse(localStorage.getItem(this.key) || '{}');
-      $('#toggleRain').checked = s.rain !== undefined ? !!s.rain : true;
-      $('#toggleDark').checked = s.dark || false;
-      $('#toggleCompact').checked = s.compact || false;
-      document.getElementById('open-settings').addEventListener('click', ()=> this.open());
-      document.getElementById('close-settings').addEventListener('click', ()=> this.close());
-      document.getElementById('reset-settings').addEventListener('click', ()=> this.reset());
-      $('#toggleRain').addEventListener('change', ()=> this.save());
-      $('#toggleDark').addEventListener('change', ()=> this.save());
-      $('#toggleCompact').addEventListener('change', ()=> this.save());
-      this.apply();
-    },
-    open(){ this.elPanel.classList.add('open'); this.elPanel.setAttribute('aria-hidden','false'); },
-    close(){ this.elPanel.classList.remove('open'); this.elPanel.setAttribute('aria-hidden','true'); },
-    save(){ localStorage.setItem(this.key, JSON.stringify({ rain: $('#toggleRain').checked, dark: $('#toggleDark').checked, compact: $('#toggleCompact').checked })); this.apply(); },
-    apply(){
-      document.getElementById('rain-wrapper').style.display = $('#toggleRain').checked ? 'block' : 'none';
-      document.body.classList.toggle('compact', $('#toggleCompact').checked);
-      document.body.style.filter = $('#toggleDark').checked ? 'brightness(0.92)' : 'none';
-      this.elPanel.setAttribute('aria-hidden','true');
-    },
-    reset(){ localStorage.removeItem(this.key); $('#toggleRain').checked = true; $('#toggleDark').checked=false; $('#toggleCompact').checked=false; this.save(); }
-  };
-  settings.init();
-
-  // ---------- keyboard shortcuts ----------
-  window.addEventListener('keydown', (e)=>{
-    if(e.key === '/' && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA'){ e.preventDefault(); $('#searchBar').focus(); }
-    if(e.key === 'Escape'){ try{ closeZone(); }catch(e){} }
-    if((e.key === 'p' || e.key === 'P') && (e.ctrlKey || e.metaKey)){ e.preventDefault(); try{ window.cloakPanic?.(); }catch(e){} }
+<script>
+// Filter games
+function filterGames(){
+  const search=document.getElementById('searchBar').value.toLowerCase();
+  document.querySelectorAll('.game-card').forEach(card=>{
+    const name=card.getAttribute('data-name').toLowerCase();
+    card.style.display=name.includes(search)?'block':'none';
   });
+}
 
-  // ---------- robust image handling & card enhancer ----------
-  function enhanceCard(card){
-    if(!card || card.dataset.enhanced) return;
-    card.dataset.enhanced = '1';
-    // find title
-    let titleEl = card.querySelector('.zone-title, h3, h4, .title');
-    let title = titleEl ? titleEl.textContent.trim() : (card.dataset.name || card.getAttribute('data-name') || (card.querySelector('img')?.alt || 'Untitled'));
-    card.dataset.search = (title || '').toLowerCase();
-    // image
-    const img = card.querySelector('img');
-    if(img){
-      img.loading = 'lazy'; img.decoding = 'async'; img.referrerPolicy = 'no-referrer';
-      img.onerror = function(){ if(!this.dataset._fallback){ this.dataset._fallback='1'; this.src = placeholderDataURI; } };
-    }
-    // favorite button
-    if(!card.querySelector('.fav-btn')){
-      const fav = document.createElement('button'); fav.className = 'fav-btn'; fav.title='Favorite'; fav.innerText='★';
-      fav.addEventListener('click', (e)=>{ e.stopPropagation(); toggleFavorite(title); paintFavs(); });
-      card.appendChild(fav);
-      fav.style.display = 'block';
-    }
-    // intercept clicks (prevent jumping away) — open overlay instead
-    const anchor = card.querySelector('a[href]') || (card.querySelector('[data-href]') ? card : null);
-    if(anchor){
-      // avoid breaking other handlers — intercept click events and open overlay
-      card.addEventListener('click', (ev)=>{
-        try{
-          ev.stopPropagation(); ev.preventDefault();
-          let href = anchor.querySelector ? (anchor.querySelector('a')?.href || anchor.dataset.href) : anchor.href;
-          if(!href) {
-            // try to find first link inside
-            href = card.querySelector('a')?.href || card.dataset.href || '';
-          }
-          openOverlayForCard(card, href);
-        }catch(e){}
-      }, {capture:true});
-    } else {
-      // no link — maybe original script attaches click. still attach friendly overlay
-      card.addEventListener('click', (ev)=>{ ev.stopPropagation(); ev.preventDefault(); openOverlayForCard(card, card.dataset.href || ''); }, {capture:true});
-    }
-  }
+// Chat popup
+function toggleChat(){
+  if(window.chatWindow && !window.chatWindow.closed){ window.chatWindow.focus(); }
+  else { window.chatWindow=window.open('https://forum.whatthesigma.site/home','ChatWindow','width=400,height=600');
+         if(!window.chatWindow) alert("Popup blocked!"); }
+}
 
-  function enhanceAll(){
-    const selector = '#container .zone, #container .zone-card, #featuredZones .zone, #featuredZones .zone-card, .zone, .zone-card';
-    $$(selector).forEach(enhanceCard);
-    paintFavs();
-  }
+// Settings panel placeholder
+function openSettings(){ alert("Settings panel coming soon!"); }
 
-  // ---------- favorites, recent, trending ----------
-  const db = {
-    favsKey:'mg_favs', recentKey:'mg_recent', statsKey:'mg_stats',
-    favs(){ try{return JSON.parse(localStorage.getItem(this.favsKey)||'[]')}catch{ return [] } },
-    toggleFav(n){ try{ const a=this.favs(); const i=a.indexOf(n); if(i>=0) a.splice(i,1); else a.push(n); localStorage.setItem(this.favsKey, JSON.stringify(a)); }catch{} },
-    addRecent(n,href){ try{ let r=JSON.parse(localStorage.getItem(this.recentKey)||'[]'); r=r.filter(x=>x.name!==n); r.unshift({name:n,href:href||'',t:Date.now()}); localStorage.setItem(this.recentKey, JSON.stringify(r.slice(0,16))); }catch{} },
-    bumpStat(n,href){ try{ const s=JSON.parse(localStorage.getItem(this.statsKey)||'{}'); s[n] = s[n] ? {c:s[n].c+1,href:href||s[n].href,t:Date.now()} : {c:1,href:href||'',t:Date.now()}; localStorage.setItem(this.statsKey, JSON.stringify(s)); }catch{} },
-    getStats(){ try{return JSON.parse(localStorage.getItem(this.statsKey)||'{}')}catch{return{}} }
-  };
+// Rain animation
+const rainWrapper=document.getElementById('rain-wrapper');
+const numDrops=120;
+for(let i=0;i<numDrops;i++){
+  const drop=document.createElement('div');
+  drop.classList.add('raindrop');
+  const delay=Math.random()*10;
+  const duration=2+Math.random()*3;
+  const left=Math.random()*100;
+  const size=1+Math.random()*2;
+  drop.style.left=left+'vw';
+  drop.style.width=size+'px';
+  drop.style.height=(8+size*6)+'px';
+  drop.style.animationDuration=duration+'s';
+  drop.style.animationDelay=delay+'s';
+  rainWrapper.appendChild(drop);
+}
+</script>
 
-  function toggleFavorite(name){ db.toggleFav(name); paintFavs(); }
-  function paintFavs(){
-    const favs = db.favs();
-    $$('.fav-btn').forEach(btn=>{
-      const parent = btn.closest('.zone-card');
-      const title = parent ? (parent.dataset.search || parent.querySelector('.zone-title')?.textContent || '') : btn.dataset.name;
-      btn.style.background = favs.includes(title) ? 'linear-gradient(90deg,#ffd70044,#ffd70022)' : 'rgba(0,0,0,0.36)';
-    });
-  }
-
-  function renderRecentStrip(){
-    const wrap = $('#recentStrip'); if(!wrap) return;
-    const arr = JSON.parse(localStorage.getItem(db.recentKey) || '[]');
-    wrap.innerHTML=''; arr.slice(0,12).forEach(it=>{
-      const card = document.createElement('div'); card.className='zone-card';
-      card.innerHTML = `<img src="favicon.png" alt="${it.name}"><div class="zone-meta"><div class="zone-title">${it.name}</div><div class="badges"><span class="badge">Recent</span></div></div>`;
-      card.addEventListener('click', ()=> window.open(it.href||'#','_blank'));
-      wrap.appendChild(card);
-    });
-  }
-
-  function renderTrendingStrip(){
-    const wrap = $('#trendingStrip'); if(!wrap) return;
-    const stats = db.getStats();
-    const arr = Object.entries(stats).sort((a,b)=>b[1].c - a[1].c).slice(0,12);
-    wrap.innerHTML='';
-    arr.forEach(([name,info])=>{
-      const card = document.createElement('div'); card.className='zone-card';
-      card.innerHTML = `<img src="favicon.png" alt="${name}"><div class="zone-meta"><div class="zone-title">${name}</div><div class="badges"><span class="badge">Hot</span></div></div>`;
-      card.addEventListener('click', ()=> window.open(info.href||'#','_blank'));
-      wrap.appendChild(card);
-    });
-  }
-
-  // ---------- overlay behavior & patching so UI remains visible ----------
-  function openOverlayForCard(card, href){
-    const title = card.dataset.search || card.querySelector('.zone-title')?.textContent || 'Game';
-    const sub = card.querySelector('.badge')?.textContent || '';
-    $('#zoneName').textContent = title;
-    $('#zoneSub').textContent = sub;
-    // set iframe src on Play button click only (avoids autoplay / immediate navigation)
-    $('#play-btn').onclick = ()=> {
-      const frame = $('#zoneFrame'); frame.src = href || card.querySelector('a')?.href || '';
-      document.getElementById('zoneViewer').style.display = 'flex'; document.getElementById('zoneViewer').setAttribute('aria-hidden','false');
-      // update recent/trending stats
-      db.addRecent(title, href); db.bumpStat(title, href); renderRecentStrip(); renderTrendingStrip();
-    };
-    // optionally show a preview (if some games expose preview images) — show placeholder if none
-    // Show overlay but require user to press Play to load iframe (this prevents auto navigation & keeps UI)
-    document.getElementById('zoneViewer').style.display = 'flex';
-    document.getElementById('zoneViewer').setAttribute('aria-hidden','false');
-    $('#zoneFrame').src = ''; // clear until Play pressed
-  }
-
-  function closeZone(){ $('#zoneFrame').src=''; document.getElementById('zoneViewer').style.display='none'; document.getElementById('zoneViewer').setAttribute('aria-hidden','true'); }
-  function playInOverlay(){ $('#play-btn').click(); }
-  function fullscreenZone(){ try{ $('#zoneFrame').requestFullscreen(); }catch(e){} }
-  function aboutBlank(){ const u = $('#zoneFrame').src; if(u) window.open(u,'_blank'); }
-  function downloadZone(){ const u = $('#zoneFrame').src; if(u) window.open(u,'_blank'); }
-
-  // ---------- enhance original DOM when it's ready ----------
-  function runEnhancer(){
-    try{
-      // if original script populated container, enhance those cards
-      enhanceAll();
-      renderTrendingStrip(); renderRecentStrip();
-    }catch(e){}
-  }
-  window.addEventListener('load', ()=> {
-    // initial enhancer runs
-    setTimeout(runEnhancer, 400);
-    setTimeout(runEnhancer, 1200);
-    setTimeout(runEnhancer, 2600);
-  });
-
-  // also observe for changes (original script might run async)
-  const target = document.getElementById('container') || document.body;
-  if(target){
-    const mo = new MutationObserver((muts)=>{ runEnhancer(); });
-    mo.observe(target, {childList:true, subtree:true});
-  }
-
-  // ---------- fallback list injection (if OG script fails) ----------
-  (function fallbackPopulate(){
-    const container = document.getElementById('container');
-    if(!container) return;
-    setTimeout(()=>{
-      if(container.children.length>0) return; // original script worked
-      // large sample list — extend as you want. These image paths use base above (update if needed)
-      const fallbackGames = [
-        {name:'DriveMad', img:'images/drive-mad.png', url:'/games/drive-mad/index.html', tags:['Racing']},
-        {name:'Crazy Cattle 3D', img:'images/crazy-cattle.png', url:'/games/crazy-cattle/index.html', tags:['Action']},
-        {name:'Run 3', img:'images/run3.png', url:'/games/run3/index.html', tags:['Platform']},
-        {name:'Slope', img:'images/slope.png', url:'/games/slope/index.html', tags:['Arcade']},
-        {name:'Tetris', img:'images/tetris.png', url:'/games/tetris/index.html', tags:['Classic']},
-        {name:'Minecraft Classic', img:'images/minecraft.png', url:'/games/minecraft/index.html', tags:['Sandbox']},
-        {name:'1v1.lol', img:'images/1v1lol.png', url:'/games/1v1lol/index.html', tags:['Shooter']},
-        {name:'Retro Bowl', img:'images/retro-bowl.png', url:'/games/retrobowl/index.html', tags:['Sports']},
-        {name:'Cookie Clicker', img:'images/cookie.png', url:'/games/cookie/index.html', tags:['Idle']},
-        {name:'Drift Hunters', img:'images/drift-hunters.png', url:'/games/drift-hunters/index.html', tags:['Racing']},
-        {name:'Crazy Wheels', img:'images/crazy-wheels.png', url:'/games/crazy-wheels/index.html', tags:['Action']},
-        {name:'Peggle', img:'images/peggle.png', url:'/games/peggle/index.html', tags:['Puzzle']},
-        {name:'Oddbods Race', img:'images/oddbods.png', url:'/games/oddbods/index.html', tags:['Arcade']},
-        {name:'Bubble Shooter', img:'images/bubble-shooter.png', url:'/games/bubble-shooter/index.html', tags:['Puzzle']},
-        {name:'Papa’s Pizzeria (Demo)', img:'images/papas.png', url:'/games/papas-pizzeria/index.html', tags:['Simulation']},
-        {name:'Quiz50 (Sample)', img:'images/quiz50.png', url:'/games/quiz50/index.html', tags:['Quiz']},
-        {name:'FreezeNova Miner', img:'images/freezenova.png', url:'/games/freezenova/index.html', tags:['Arcade']},
-        {name:'Pizza Edition', img:'images/pizza-edition.png', url:'/games/pizza-edition/index.html', tags:['Minigames']}
-        // add more lines here from your OG file if needed
-      ];
-      container.innerHTML = '';
-      const featuredWrap = $('#featuredZones');
-      fallbackGames.forEach((g,i)=>{
-        const card = document.createElement('div'); card.className='zone-card';
-        card.innerHTML = `<img src="${g.img}" alt="${g.name}"><div class="zone-meta"><div class="zone-title">${g.name}</div><div class="badges">${g.tags.map(t=>`<span class="badge">${t}</span>`).join('')}</div></div><div style="padding:0 10px 12px"><div class="desc">Click to view | Play in overlay</div></div>`;
-        card.dataset.href = g.url;
-        container.appendChild(card);
-        if(i<4 && featuredWrap) featuredWrap.appendChild(card.cloneNode(true));
-      });
-      enhanceAll();
-    }, 900);
-  })();
-
-  // ---------- expose functions for original script compatibility ----------
-  window.openZone = openOverlayForCard; window.closeZone = closeZone; window.fullscreenZone = fullscreenZone; window.aboutBlank = aboutBlank; window.downloadZone = downloadZone;
-  window.toggleChat = function(){ if(window.chatWindow && !window.chatWindow.closed) return window.chatWindow.focus(); window.chatWindow = window.open('https://forum.whatthesigma.site/home','ChatWindow','width=420,height=640'); if(!window.chatWindow) alert('Popup blocked!'); };
-
-  // initial renders
-  setTimeout(()=>{ renderTrendingStrip(); renderRecentStrip(); }, 1100);
-  </script>
 </body>
 </html>
