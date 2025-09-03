@@ -7,7 +7,6 @@
 
   <!-- Favicons -->
   <link rel="icon" type="image/png" href="favicon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
   <link rel="apple-touch-icon" href="favicon.png">
 
   <!-- Google / Analytics / Ads -->
@@ -29,7 +28,6 @@
       background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
       color: #ffffff;
       overflow-x: hidden;
-      position: relative;
     }
     header {
       background: rgba(0,0,0,0.6);
@@ -37,15 +35,14 @@
       display: flex; justify-content: space-between; align-items: center;
     }
     .logo {
-      font-size: 2rem;
-      font-weight: bold;
+      font-size: 2rem; font-weight: bold;
       color: #f0db4f;
       text-shadow: 0 0 10px #f0db4f, 0 0 20px #f0db4f;
       animation: glow 1.5s ease-in-out infinite alternate;
     }
     @keyframes glow {
       from { text-shadow: 0 0 5px #f0db4f; }
-      to   { text-shadow: 0 0 20px #f0db4f, 0 0 30px #f0db4f; }
+      to   { text-shadow: 0 0 25px #f0db4f, 0 0 40px #f0db4f; }
     }
     .search-container { display: flex; gap: 10px; }
     #searchBar, #sortOptions {
@@ -59,99 +56,68 @@
     }
     main { padding: 20px; }
     details { margin-bottom: 20px; }
-    summary { cursor: pointer; }
+    summary { cursor: pointer; font-size: 1.2rem; font-weight: bold; }
+
+    /* Game cards */
+    .zone-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 15px;
+    }
+    .zone-card {
+      background: rgba(0,0,0,0.5);
+      border-radius: 12px;
+      overflow: hidden;
+      text-align: center;
+      padding: 10px;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.3s;
+    }
+    .zone-card img {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+    .zone-card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px #00ffff;
+    }
+    .zone-card h3 {
+      margin: 8px 0 0;
+      font-size: 1rem;
+      color: #fff;
+    }
+
+    /* Zone viewer */
     #zoneViewer {
-      display: none; position: fixed; top: 5%; left: 5%; right: 5%; bottom: 5%;
+      display: none; flex-direction: column;
+      position: fixed; top: 5%; left: 5%; right: 5%; bottom: 5%;
       background: #111; border-radius: 10px;
       box-shadow: 0 0 30px rgba(0,0,0,0.7);
-      z-index: 100; padding: 10px; flex-direction: column;
+      z-index: 100; padding: 10px;
+      animation: fadeIn 0.3s ease-out;
     }
-    #zoneFrame {
-      width: 100%; height: calc(100% - 60px); border: none; border-radius: 8px;
-    }
+    @keyframes fadeIn { from {opacity:0; transform:scale(0.95);} to {opacity:1; transform:scale(1);} }
+    #zoneFrame { width: 100%; height: calc(100% - 60px); border: none; border-radius: 8px; }
     .zone-controls button {
       margin-left: 5px; padding: 5px 10px;
       border: none; border-radius: 6px; cursor: pointer;
       background: #00ffff; color: #0f2027;
     }
-    footer {
-      margin-top: 30px; padding: 15px;
-      background: rgba(0,0,0,0.7);
-      text-align: center;
-    }
-    footer a { color: #00ffff; margin: 0 10px; text-decoration: none; }
 
-    /* Rain Effect */
-    .rain-wrapper {
-      pointer-events: none;
-      position: fixed; top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      z-index: 5;
-    }
-    .raindrop {
-      position: absolute; top: -20px;
-      width: 2px;
-      background: linear-gradient(180deg, #00ffff, #0077aa);
-      border-radius: 50% / 40%;
-      opacity: 0.6;
-      animation: fall linear infinite;
-    }
-    @keyframes fall {
-      to { transform: translateY(110vh); opacity: 0; }
-    }
+    /* Rain */
+    .rain-wrapper { pointer-events:none; position:fixed; top:0; left:0; width:100vw; height:100vh; z-index:5; }
+    .raindrop { position:absolute; top:-20px; width:2px; background:linear-gradient(180deg,#00ffff,#0077aa); opacity:.6; animation:fall linear infinite; }
+    @keyframes fall { to { transform: translateY(110vh); opacity: 0; } }
 
-    /* Chat Button */
-    #chat-toggle {
-      position: fixed; bottom: 20px; left: 20px;
-      background-color: #0078D7; color: white;
-      padding: 10px 15px; border-radius: 20px;
-      cursor: pointer; z-index: 1000;
-      box-shadow: 0 0 10px #0078D7;
-    }
-    /* Partner Badge */
-    .partner-badge {
-      position: fixed; bottom: 20px; right: 20px;
-      background: linear-gradient(135deg, #00ffff, #0078D7);
-      color: #0f2027; padding: 10px 20px;
-      border-radius: 30px; font-weight: bold;
-      text-decoration: none; box-shadow: 0 0 15px #00ffff;
-    }
-    .partner-badge:hover { transform: scale(1.05); box-shadow: 0 0 25px #00ffff; color: #fff; }
+    /* Chat & partner */
+    #chat-toggle { position:fixed; bottom:20px; left:20px; background:#0078D7; color:white; padding:10px 15px; border-radius:20px; cursor:pointer; z-index:1000; box-shadow:0 0 10px #0078D7; }
+    .partner-badge { position:fixed; bottom:20px; right:20px; background:linear-gradient(135deg,#00ffff,#0078D7); color:#0f2027; padding:10px 20px; border-radius:30px; font-weight:bold; text-decoration:none; box-shadow:0 0 15px #00ffff; }
+    .partner-badge:hover { transform:scale(1.05); box-shadow:0 0 25px #00ffff; color:#fff; }
 
-    /* Settings Panel */
-    #settings-panel {
-      position: fixed;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%) scale(0);
-      width: 90%; max-width: 400px;
-      background: rgba(0, 0, 0, 0.8);
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.5);
-      color: #00ffff;
-      transition: transform 0.3s ease-out;
-      z-index: 200;
-    }
-    #settings-panel.open { transform: translate(-50%, -50%) scale(1); }
-    #settings-panel h2 {
-      margin-top: 0;
-      color: #f0db4f;
-      text-shadow: 0 0 10px #f0db4f;
-    }
-    #settings-panel label {
-      display: block;
-      margin-bottom: 10px;
-      cursor: pointer;
-    }
-    #settings-panel button.close-btn {
-      margin-top: 15px;
-      padding: 8px 12px;
-      background: #00ffff;
-      color: #0f2027;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-    }
+    footer { margin-top:30px; padding:15px; background:rgba(0,0,0,0.7); text-align:center; }
+    footer a { color:#00ffff; margin:0 10px; text-decoration:none; }
   </style>
 </head>
 <body class="dark-mode">
@@ -162,7 +128,7 @@
   <header>
     <div class="logo">MR GAMES</div>
     <div class="search-container">
-      <input type="text" id="searchBar" placeholder="Search zones..." oninput="filterZones()">
+      <input type="text" id="searchBar" placeholder="Search games..." oninput="filterZones()">
       <select id="sortOptions" onchange="sortZones()">
         <option value="name">Name</option>
         <option value="id">ID (Date)</option>
@@ -174,73 +140,36 @@
     </div>
   </header>
 
-  <!-- Settings Panel -->
-  <div id="settings-panel">
-    <h2>Settings</h2>
-    <label><input type="checkbox" id="toggleDarkMode"> Dark Mode</label>
-    <label><input type="checkbox" id="toggleRain"> Rain Effect</label>
-    <button class="close-btn" onclick="closeSettings()">Close</button>
-  </div>
-
-  <!-- Ad -->
-  <ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-client="ca-pub-5521219086088837" data-ad-slot="5549138288" data-ad-format="auto" data-full-width-responsive="true"></ins>
-  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-
   <!-- Main -->
   <main>
-    <details id="featuredZonesWrapper" open>
-      <summary style="font-size:1.2rem;font-weight:bold;">Featured Zones</summary>
+    <details open>
+      <summary>Featured Games</summary>
       <div id="featuredZones" class="zone-container"></div>
     </details>
 
-    <details id="allZonesWrapper" open>
-      <summary style="font-size:1.2rem;font-weight:bold;">All Zones</summary>
-      <div id="container">Loading...</div>
+    <details open>
+      <summary>All Games</summary>
+      <div id="allZones" class="zone-container"></div>
     </details>
   </main>
 
   <!-- Zone Viewer -->
   <div id="zoneViewer">
     <div class="zone-header">
-      <div class="zone-title">
-        <h2 id="zoneName">zone</h2>
-        <span id="zoneId" style="display:none;"></span>
-        <a id="zoneAuthor" href="#" target="_blank">by Author</a>
-      </div>
+      <h2 id="zoneName">Game</h2>
       <div class="zone-controls">
         <button onclick="fullscreenZone()">Fullscreen</button>
-        <button onclick="aboutBlank()">Open in New Tab</button>
-        <button onclick="downloadZone()">Download</button>
+        <button onclick="aboutBlank()">New Tab</button>
         <button onclick="closeZone()">Close</button>
       </div>
     </div>
     <iframe id="zoneFrame"></iframe>
   </div>
 
-  <!-- Popup Overlay -->
-  <div id="popupOverlay">
-    <div class="popup">
-      <div class="popup-header">
-        <h3 id="popupTitle">Title</h3>
-        <button id="popupClose" onclick="closePopup()">×</button>
-      </div>
-      <div id="popupBody"> Content will be here </div>
-    </div>
-  </div>
-
-  <!-- Ad -->
-  <ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-client="ca-pub-5521219086088837" data-ad-slot="5549138288" data-ad-format="auto" data-full-width-responsive="true"></ins>
-  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-
   <!-- Footer -->
   <footer>
-    <div class="footer-links">
-      <a href="#" onclick="showContact(); return false;">Contact</a>
-      <a href="#" onclick="loadPrivacy(); return false;">Privacy Policy</a>
-      <a href="javascript:saveData()">Export Data</a>
-      <a href="#" onclick="document.getElementById('importData').click(); return false;">Import Data</a>
-      <input type="file" id="importData" style="display:none;" onchange="loadData(event)">
-    </div>
+    <a href="#">Contact</a>
+    <a href="#">Privacy</a>
   </footer>
 
   <!-- Chat & Partner -->
@@ -248,54 +177,50 @@
   <a href="https://ezunblocktheopps.github.io/" class="partner-badge" target="_blank">🤝 Partnered with Sigmi</a>
 
   <!-- Scripts -->
-  <script src="script.js"></script>
-  <script src="cloak_panic.js"></script>
   <script>
-    // Chat popup
-    function toggleChat() {
-      if (window.chatWindow && !window.chatWindow.closed) {
-        window.chatWindow.focus();
-      } else {
-        window.chatWindow = window.open(
-          'https://forum.whatthesigma.site/home',
-          'ChatWindow',
-          'width=400,height=600'
-        );
-        if (!window.chatWindow) { alert("Popup blocked! Please allow popups to use chat."); }
-      }
+    // Example games (replace/add more as needed)
+    const games = [
+      {name:"Retro Bowl", img:"images/retro-bowl.png", url:"/games/retrobowl/index.html"},
+      {name:"1v1.LOL", img:"images/1v1lol.png", url:"/games/1v1lol/index.html"},
+      {name:"Minecraft", img:"images/minecraft.png", url:"/games/minecraft/index.html"},
+      {name:"Slope", img:"images/slope.png", url:"/games/slope/index.html"},
+      {name:"Run 3", img:"images/run3.png", url:"/games/run3/index.html"}
+    ];
+
+    function loadGames() {
+      const container = document.getElementById("allZones");
+      const featured = document.getElementById("featuredZones");
+      container.innerHTML = "";
+      featured.innerHTML = "";
+      games.forEach((g,i)=>{
+        const card = document.createElement("div");
+        card.className = "zone-card";
+        card.innerHTML = `<img src="${g.img}" alt="${g.name}"><h3>${g.name}</h3>`;
+        card.onclick = ()=>openZone(g);
+        if(i<3) featured.appendChild(card.cloneNode(true));
+        container.appendChild(card);
+      });
     }
 
-    // 🌧 Rain
-    const rainWrapper = document.getElementById('rain-wrapper');
-    const numDrops = 120;
-    for (let i = 0; i < numDrops; i++) {
-      const drop = document.createElement('div');
-      drop.classList.add('raindrop');
-      const delay = Math.random() * 10;
-      const duration = 2 + Math.random() * 3;
-      const left = Math.random() * 100;
-      const size = 1 + Math.random() * 2;
-      drop.style.left = `${left}vw`;
-      drop.style.width = `${size}px`;
-      drop.style.height = `${8 + size * 6}px`;
-      drop.style.animationDuration = `${duration}s`;
-      drop.style.animationDelay = `${delay}s`;
-      rainWrapper.appendChild(drop);
+    function openZone(game) {
+      document.getElementById("zoneName").innerText = game.name;
+      document.getElementById("zoneFrame").src = game.url;
+      document.getElementById("zoneViewer").style.display = "flex";
+    }
+    function closeZone(){ document.getElementById("zoneViewer").style.display="none"; document.getElementById("zoneFrame").src=""; }
+    function fullscreenZone(){ document.getElementById("zoneFrame").requestFullscreen(); }
+    function aboutBlank(){ window.open(document.getElementById("zoneFrame").src,"_blank"); }
+
+    function toggleChat(){
+      if(window.chatWindow && !window.chatWindow.closed){window.chatWindow.focus();}
+      else{window.chatWindow=window.open("https://forum.whatthesigma.site/home","ChatWindow","width=400,height=600");}
     }
 
-    // Settings
-    document.getElementById('settings-btn').addEventListener('click', () => {
-      document.getElementById('settings-panel').classList.add('open');
-    });
-    function closeSettings() {
-      document.getElementById('settings-panel').classList.remove('open');
-    }
-    document.getElementById('toggleDarkMode').addEventListener('change', (e) => {
-      document.body.classList.toggle('dark-mode', e.target.checked);
-    });
-    document.getElementById('toggleRain').addEventListener('change', (e) => {
-      document.querySelector('.rain-wrapper').style.display = e.target.checked ? 'block' : 'none';
-    });
+    // Rain effect
+    const rainWrapper=document.getElementById("rain-wrapper");
+    for(let i=0;i<80;i++){const drop=document.createElement("div");drop.classList.add("raindrop");drop.style.left=Math.random()*100+"vw";drop.style.height=10+Math.random()*15+"px";drop.style.animationDuration=1.5+Math.random()*2+"s";drop.style.width="2px";rainWrapper.appendChild(drop);}
+    
+    loadGames();
   </script>
 </body>
 </html>
