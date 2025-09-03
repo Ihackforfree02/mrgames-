@@ -4,8 +4,24 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>MR GAMES</title>
-  <link rel="icon" href="favicon.png" />
 
+  <!-- Favicons -->
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
+  <link rel="apple-touch-icon" href="favicon.png">
+
+  <!-- Google / Analytics / Ads -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5521219086088837" crossorigin="anonymous"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-WX5VS54ZDW"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-WX5VS54ZDW');
+  </script>
+  <meta name="google-adsense-account" content="ca-pub-5521219086088837">
+
+  <!-- Styles -->
   <style>
     body, html {
       margin: 0; padding: 0; height: 100%;
@@ -14,6 +30,11 @@
       color: #ffffff;
       overflow-x: hidden;
       position: relative;
+    }
+    header {
+      background: rgba(0,0,0,0.6);
+      padding: 15px;
+      display: flex; justify-content: space-between; align-items: center;
     }
     .logo {
       font-size: 2rem;
@@ -26,6 +47,78 @@
       from { text-shadow: 0 0 5px #f0db4f; }
       to   { text-shadow: 0 0 20px #f0db4f, 0 0 30px #f0db4f; }
     }
+    .search-container { display: flex; gap: 10px; }
+    #searchBar, #sortOptions {
+      padding: 8px; border-radius: 6px; border: none; outline: none;
+    }
+    .control-buttons button {
+      background-color: #00ffff; color: #0f2027;
+      border: none; border-radius: 8px;
+      padding: 0.5rem 1rem; cursor: pointer;
+      font-weight: bold;
+    }
+    main { padding: 20px; }
+    details { margin-bottom: 20px; }
+    summary { cursor: pointer; }
+    #zoneViewer {
+      display: none; position: fixed; top: 5%; left: 5%; right: 5%; bottom: 5%;
+      background: #111; border-radius: 10px;
+      box-shadow: 0 0 30px rgba(0,0,0,0.7);
+      z-index: 100; padding: 10px; flex-direction: column;
+    }
+    #zoneFrame {
+      width: 100%; height: calc(100% - 60px); border: none; border-radius: 8px;
+    }
+    .zone-controls button {
+      margin-left: 5px; padding: 5px 10px;
+      border: none; border-radius: 6px; cursor: pointer;
+      background: #00ffff; color: #0f2027;
+    }
+    footer {
+      margin-top: 30px; padding: 15px;
+      background: rgba(0,0,0,0.7);
+      text-align: center;
+    }
+    footer a { color: #00ffff; margin: 0 10px; text-decoration: none; }
+
+    /* Rain Effect */
+    .rain-wrapper {
+      pointer-events: none;
+      position: fixed; top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      z-index: 5;
+    }
+    .raindrop {
+      position: absolute; top: -20px;
+      width: 2px;
+      background: linear-gradient(180deg, #00ffff, #0077aa);
+      border-radius: 50% / 40%;
+      opacity: 0.6;
+      animation: fall linear infinite;
+    }
+    @keyframes fall {
+      to { transform: translateY(110vh); opacity: 0; }
+    }
+
+    /* Chat Button */
+    #chat-toggle {
+      position: fixed; bottom: 20px; left: 20px;
+      background-color: #0078D7; color: white;
+      padding: 10px 15px; border-radius: 20px;
+      cursor: pointer; z-index: 1000;
+      box-shadow: 0 0 10px #0078D7;
+    }
+    /* Partner Badge */
+    .partner-badge {
+      position: fixed; bottom: 20px; right: 20px;
+      background: linear-gradient(135deg, #00ffff, #0078D7);
+      color: #0f2027; padding: 10px 20px;
+      border-radius: 30px; font-weight: bold;
+      text-decoration: none; box-shadow: 0 0 15px #00ffff;
+    }
+    .partner-badge:hover { transform: scale(1.05); box-shadow: 0 0 25px #00ffff; color: #fff; }
+
+    /* Settings Panel */
     #settings-panel {
       position: fixed;
       top: 50%; left: 50%;
@@ -61,14 +154,24 @@
     }
   </style>
 </head>
-<body>
+<body class="dark-mode">
+  <!-- Rain -->
+  <div class="rain-wrapper" id="rain-wrapper"></div>
+
+  <!-- Header -->
   <header>
     <div class="logo">MR GAMES</div>
-    <button id="settings-btn" style="
-      background-color: #00ffff; color: #0f2027; border: none;
-      border-radius: 8px; padding: 0.5rem 1rem; cursor: pointer;
-      font-weight: bold;
-    ">Settings</button>
+    <div class="search-container">
+      <input type="text" id="searchBar" placeholder="Search zones..." oninput="filterZones()">
+      <select id="sortOptions" onchange="sortZones()">
+        <option value="name">Name</option>
+        <option value="id">ID (Date)</option>
+        <option value="popular">Popular</option>
+      </select>
+    </div>
+    <div class="control-buttons">
+      <button id="settings-btn">Settings</button>
+    </div>
   </header>
 
   <!-- Settings Panel -->
@@ -79,17 +182,114 @@
     <button class="close-btn" onclick="closeSettings()">Close</button>
   </div>
 
-  <!-- Rest of your content (ads, zones, chat button, etc.) remain unchanged -->
-  <!-- ... -->
+  <!-- Ad -->
+  <ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-client="ca-pub-5521219086088837" data-ad-slot="5549138288" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 
+  <!-- Main -->
+  <main>
+    <details id="featuredZonesWrapper" open>
+      <summary style="font-size:1.2rem;font-weight:bold;">Featured Zones</summary>
+      <div id="featuredZones" class="zone-container"></div>
+    </details>
+
+    <details id="allZonesWrapper" open>
+      <summary style="font-size:1.2rem;font-weight:bold;">All Zones</summary>
+      <div id="container">Loading...</div>
+    </details>
+  </main>
+
+  <!-- Zone Viewer -->
+  <div id="zoneViewer">
+    <div class="zone-header">
+      <div class="zone-title">
+        <h2 id="zoneName">zone</h2>
+        <span id="zoneId" style="display:none;"></span>
+        <a id="zoneAuthor" href="#" target="_blank">by Author</a>
+      </div>
+      <div class="zone-controls">
+        <button onclick="fullscreenZone()">Fullscreen</button>
+        <button onclick="aboutBlank()">Open in New Tab</button>
+        <button onclick="downloadZone()">Download</button>
+        <button onclick="closeZone()">Close</button>
+      </div>
+    </div>
+    <iframe id="zoneFrame"></iframe>
+  </div>
+
+  <!-- Popup Overlay -->
+  <div id="popupOverlay">
+    <div class="popup">
+      <div class="popup-header">
+        <h3 id="popupTitle">Title</h3>
+        <button id="popupClose" onclick="closePopup()">×</button>
+      </div>
+      <div id="popupBody"> Content will be here </div>
+    </div>
+  </div>
+
+  <!-- Ad -->
+  <ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-client="ca-pub-5521219086088837" data-ad-slot="5549138288" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-links">
+      <a href="#" onclick="showContact(); return false;">Contact</a>
+      <a href="#" onclick="loadPrivacy(); return false;">Privacy Policy</a>
+      <a href="javascript:saveData()">Export Data</a>
+      <a href="#" onclick="document.getElementById('importData').click(); return false;">Import Data</a>
+      <input type="file" id="importData" style="display:none;" onchange="loadData(event)">
+    </div>
+  </footer>
+
+  <!-- Chat & Partner -->
+  <div id="chat-toggle" onclick="toggleChat()">💬 Chat</div>
+  <a href="https://ezunblocktheopps.github.io/" class="partner-badge" target="_blank">🤝 Partnered with Sigmi</a>
+
+  <!-- Scripts -->
+  <script src="script.js"></script>
+  <script src="cloak_panic.js"></script>
   <script>
+    // Chat popup
+    function toggleChat() {
+      if (window.chatWindow && !window.chatWindow.closed) {
+        window.chatWindow.focus();
+      } else {
+        window.chatWindow = window.open(
+          'https://forum.whatthesigma.site/home',
+          'ChatWindow',
+          'width=400,height=600'
+        );
+        if (!window.chatWindow) { alert("Popup blocked! Please allow popups to use chat."); }
+      }
+    }
+
+    // 🌧 Rain
+    const rainWrapper = document.getElementById('rain-wrapper');
+    const numDrops = 120;
+    for (let i = 0; i < numDrops; i++) {
+      const drop = document.createElement('div');
+      drop.classList.add('raindrop');
+      const delay = Math.random() * 10;
+      const duration = 2 + Math.random() * 3;
+      const left = Math.random() * 100;
+      const size = 1 + Math.random() * 2;
+      drop.style.left = `${left}vw`;
+      drop.style.width = `${size}px`;
+      drop.style.height = `${8 + size * 6}px`;
+      drop.style.animationDuration = `${duration}s`;
+      drop.style.animationDelay = `${delay}s`;
+      rainWrapper.appendChild(drop);
+    }
+
+    // Settings
     document.getElementById('settings-btn').addEventListener('click', () => {
       document.getElementById('settings-panel').classList.add('open');
     });
     function closeSettings() {
       document.getElementById('settings-panel').classList.remove('open');
     }
-    // Option handling examples:
     document.getElementById('toggleDarkMode').addEventListener('change', (e) => {
       document.body.classList.toggle('dark-mode', e.target.checked);
     });
