@@ -28,11 +28,11 @@
     <script>(function() {function signalGooglefcPresent() {if (!window.frames['googlefcPresent']) {if (document.body) {const iframe = document.createElement('iframe'); iframe.style = 'width: 0; height: 0; border: none; z-index: -1000; left: -1000px; top: -1000px;'; iframe.style.display = 'none'; iframe.name = 'googlefcPresent'; document.body.appendChild(iframe);} else {setTimeout(signalGooglefcPresent, 0);}}}signalGooglefcPresent();})();</script>
     <script src="https://cdn.jsdelivr.net/gh/gn-math/gn-math.github.io@main/gnmath.js"></script>
 
-    <!-- MR GAMES + Neon Background -->
+    <!-- MR GAMES + Styles -->
     <style>
+        /* Only changes: background, logo neon, search bar black */
         body {
             background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
-            color: #ffffff;
         }
         header .logo {
             font-size: 2.5rem;
@@ -44,6 +44,10 @@
         @keyframes glow {
             from { text-shadow: 0 0 5px #f0db4f; }
             to { text-shadow: 0 0 20px #f0db4f, 0 0 30px #f0db4f; }
+        }
+        header .search-container input {
+            background-color: black;
+            color: white;
         }
     </style>
 </head>
@@ -65,7 +69,7 @@
         </div>
     </header>
 
-    <!-- Everything else from original gn-math file remains unchanged -->
+    <!-- Everything else from original gn-math file stays unchanged -->
     <ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-client="ca-pub-5521219086088837" data-ad-slot="5549138288" data-ad-format="auto" data-full-width-responsive="true"></ins>
     <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 
