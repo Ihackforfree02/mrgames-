@@ -1,248 +1,143 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <h1 class="neon">MR GAMES+ BETA</h1>
-    <link rel="icon" type="image/png" href="favicon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
-    <link rel="apple-touch-icon" href="/favicon.png">
-    <script src="cloak_panic.js"></script>
-    <script>
-        window.addEventListener('beforeunload', function (event) {
-            event.preventDefault();
-            event.returnValue = '';
-            return 'Are you sure you want to leave? Any unsaved changes will be lost.';
-        });
-    </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MR GAMES</title>
+  <style>
+    /* Reset + Fonts */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: Arial, sans-serif;
+      background: #0d1b2a;
+      color: #fff;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
 
-    <style>
-/* --- keep your original header logo style --- */
-.header-content .logo {
-    color: #000000;
-    text-shadow:
-        0 0 5px #f0db4f,
-        0 0 10px #f0db4f,
-        0 0 20px #f0db4f,
-        0 0 40px #f0db4f;
-    font-size: 2rem;
-    font-weight: bold;
-}
+    /* Rain effect */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-image: linear-gradient(transparent, rgba(255,255,255,0.2));
+      background-size: 2px 20px;
+      animation: rain 0.5s linear infinite;
+      pointer-events: none;
+    }
+    @keyframes rain {
+      0% { background-position: 0 0; }
+      100% { background-position: 0 20px; }
+    }
 
-/* ---------- NEW: background like the screenshot ---------- */
-html, body {
-    height: 100%;
-}
-body.dark-mode {
-    /* teal/blue, soft vignette; fixed so it fills the screen */
-    background:
-      radial-gradient(120% 120% at 50% 10%, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0) 40%),
-      linear-gradient(160deg, #0f2027 0%, #203a43 40%, #2c5364 100%);
-    background-attachment: fixed, fixed;
-    margin: 0;
-    overflow-x: hidden;
-}
+    /* Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 30px;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0 20px rgba(0,255,255,0.4);
+      border-bottom: 2px solid cyan;
+    }
+    header h1 {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #fff;
+      text-shadow: 0 0 10px #ff0, 0 0 20px #ff0;
+    }
 
-/* make sure all site content sits ABOVE the rain */
-header, main, footer, #zoneViewer, #popupOverlay, .adsbygoogle {
-    position: relative;
-    z-index: 2;
-}
+    /* Search bar */
+    .search-bar {
+      display: flex;
+      gap: 10px;
+    }
+    .search-bar input,
+    .search-bar select {
+      padding: 10px 15px;
+      border: none;
+      border-radius: 8px;
+      background: #111;
+      color: #0ff;
+      font-size: 1rem;
+      outline: none;
+      box-shadow: 0 0 10px cyan;
+    }
 
-/* ---------- NEW: subtle raindrops behind everything ---------- */
-.mgplus-rain {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;       /* never block clicks/iframes */
-    z-index: 1;                 /* below the site content */
-    overflow: hidden;
-}
+    /* Game grid */
+    .games {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 20px;
+      padding: 30px;
+    }
+    .game-card {
+      background: rgba(0,0,0,0.7);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 0 15px cyan;
+      border: 2px solid cyan;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .game-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 25px #0ff, 0 0 40px #0ff;
+    }
+    .game-card img {
+      width: 100%;
+      display: block;
+    }
+    .game-card h3 {
+      text-align: center;
+      padding: 10px;
+      color: #0ff;
+      text-shadow: 0 0 5px #0ff, 0 0 15px #0ff;
+    }
 
-.mgplus-rain .drop {
-    position: absolute;
-    top: -10vh;
-    width: 2px;
-    height: 18px;               /* base; will be randomized */
-    opacity: 0.35;
-    background: linear-gradient(180deg, rgba(0,255,255,0.6), rgba(0,255,255,0));
-    border-radius: 1px;
-    filter: blur(0.2px);
-    will-change: transform;
-    animation-name: mgplus-fall;
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
-}
-
-@keyframes mgplus-fall {
-    to { transform: translateY(120vh); }
-}
-    </style>
-
-    <!-- Google / Analytics (unchanged) -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5521219086088837" crossorigin="anonymous"></script>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WX5VS54ZDW"></script>
-    <meta name="google-adsense-account" content="ca-pub-5521219086088837">
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-        gtag('config', 'G-WX5VS54ZDW');
-    </script>
-
-    <script async src="https://fundingchoicesmessages.google.com/i/pub-5521219086088837?ers=1"></script>
-    <script>
-        (function() {
-            function signalGooglefcPresent() {
-                if (!window.frames['googlefcPresent']) {
-                    if (document.body) {
-                        const iframe = document.createElement('iframe');
-                        iframe.style = 'width: 0; height: 0; border: none; z-index: -1000; left: -1000px; top: -1000px;';
-                        iframe.style.display = 'none';
-                        iframe.name = 'googlefcPresent';
-                        document.body.appendChild(iframe);
-                    } else {
-                        setTimeout(signalGooglefcPresent, 0);
-                    }
-                }
-            }
-            signalGooglefcPresent();
-        })();
-    </script>
-
-    <script src="https://cdn.jsdelivr.net/gh/gn-math/gn-math.github.io@main/gnmath.js"></script>
-
-    <meta name="title" content="GN-Math">
-    <meta name="description" content="Play unbl*cked games like Crazy Cattle 3D and DriveMad on GN-Math. Fast, free, no downloads—perfect for school or home.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://gn-math.github.io/">
-    <meta property="og:title" content="GN-Math">
-    <meta property="og:description" content="Play unbl*cked games like Crazy Cattle 3D and DriveMad on GN-Math. Fast, free, no downloads—perfect for school or home.">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:url" content="https://gn-math.github.io/">
-    <meta name="twitter:title" content="GN-Math">
-    <meta name="twitter:description" content="Play unbl*cked games like Crazy Cattle 3D and DriveMad on GN-Math. Fast, free, no downloads—perfect for school or home.">
-
-    <link rel="stylesheet" href="style.css">
+    /* Featured section title */
+    h2 {
+      padding-left: 30px;
+      font-size: 1.3rem;
+      color: #ff0;
+      text-shadow: 0 0 8px #ff0, 0 0 20px #ff0;
+    }
+  </style>
 </head>
-<body class="dark-mode">
+<body>
 
-    <!-- NEW: rain layer (generated by JS below) -->
-    <div class="mgplus-rain" aria-hidden="true"></div>
-
-    <header>
-        <div class="header-content">
-            <div class="logo">MR GAMES</div>
-            <div class="search-container">
-                <input type="text" id="searchBar" placeholder="Search zones..." oninput="filterZones()">
-                <select id="sortOptions" onchange="sortZones()">
-                    <option value="name">Name</option>
-                    <option value="id">ID (Date)</option>
-                    <option value="popular">Popular</option>
-                </select>
-            </div>
-            <div class="control-buttons">
-                <button id="settings" style="background-color: var(--primary-color); color: white; border: none; border-radius: 4px; padding: 0.5rem 1rem; font-size: 16px; cursor: pointer;">Settings</button>
-            </div>
-        </div>
-    </header>
-
-    <ins class="adsbygoogle"
-        style="display:block; text-align:center;"
-        data-ad-client="ca-pub-5521219086088837"
-        data-ad-slot="5549138288"
-        data-ad-format="auto"
-        data-full-width-responsive="true">
-    </ins>
-    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-
-    <main>
-        <details id="featuredZonesWrapper" open>
-            <summary id="allZonesSummary" style="font-size: 1.2rem; font-weight: bold; cursor: pointer;">Featured Zones</summary>
-            <div id="featuredZones" class="zone-container"></div>
-        </details>
-
-        <br><hr><br>
-
-        <details id="allZonesWrapper" open>
-            <summary id="allSummary" style="font-size: 1.2rem; font-weight: bold; cursor: pointer;">All Zones</summary>
-            <div id="container">Loading...</div>
-        </details>
-    </main>
-
-    <div id="zoneViewer">
-        <div class="zone-header">
-            <div class="zone-title">
-                <h2 id="zoneName">zone</h2>
-                <span id="zoneId" style="display: none;"></span>
-                <a id="zoneAuthor" href="#" target="_blank">by Author</a>
-            </div>
-            <div class="zone-controls">
-                <button onclick="fullscreenZone()">Fullscreen</button>
-                <button onclick="aboutBlank()">Open in New Tab</button>
-                <button onclick="downloadZone()">Download</button>
-                <button onclick="closeZone()">Close</button>
-            </div>
-        </div>
-        <iframe id="zoneFrame"></iframe>
+  <header>
+    <h1>MR GAMES</h1>
+    <div class="search-bar">
+      <input type="text" placeholder="Search zones...">
+      <select>
+        <option>Name</option>
+        <option>Newest</option>
+        <option>Popular</option>
+      </select>
     </div>
+  </header>
 
-    <div id="popupOverlay">
-        <div class="popup">
-            <div class="popup-header">
-                <h3 id="popupTitle">Title</h3>
-                <button id="popupClose" onclick="closePopup()">×</button>
-            </div>
-            <div id="popupBody">
-                Content will be here
-            </div>
-        </div>
+  <h2>Featured Zones (30)</h2>
+  <div class="games">
+    <div class="game-card">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/9/98/Discord_logo.png" alt="Discord">
+      <h3>SUGGEST GAMES</h3>
     </div>
+    <div class="game-card">
+      <img src="https://via.placeholder.com/200x200/000000/FFFFFF?text=Game+1" alt="Bad Parenting 1">
+      <h3>Bad Parenting 1</h3>
+    </div>
+    <div class="game-card">
+      <img src="https://via.placeholder.com/200x200/000000/FFFFFF?text=Baldi" alt="Baldi’s Basics Plus">
+      <h3>Baldi's Basics Plus</h3>
+    </div>
+    <div class="game-card">
+      <img src="https://via.placeholder.com/200x200/000000/FFFFFF?text=Bendy" alt="Bendy and the Ink Machine">
+      <h3>Bendy and the Ink Machine</h3>
+    </div>
+  </div>
 
-    <ins class="adsbygoogle"
-        style="display:block; text-align:center;"
-        data-ad-client="ca-pub-5521219086088837"
-        data-ad-slot="5549138288"
-        data-ad-format="auto"
-        data-full-width-responsive="true">
-    </ins>
-    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-
-    <footer>
-        <div class="footer-links">
-            <a href="#" onclick="showContact(); return false;">Contact</a>
-            <a href="#" onclick="loadPrivacy(); return false;">Privacy Policy</a>
-            <a href="javascript:saveData()">Export Data</a>
-            <a href="#" onclick="document.getElementById('importData').click(); return false;">Import Data</a>
-            <input type="file" id="importData" style="display: none;" onchange="loadData(event)">
-        </div>
-    </footer>
-
-    <script src="script.js"></script>
-    <script>
-        const search = new URLSearchParams(window.location.search);
-        const privacy = search.get('privacy');
-        if (privacy) { loadPrivacy(); }
-
-        /* ------- generate unobtrusive rainfall (DOM-based, no stripes) ------- */
-        (function makeRain() {
-          const wrap = document.querySelector('.mgplus-rain');
-          if (!wrap) return;
-          const count = 120;  // tweak: more/less rain
-          for (let i = 0; i < count; i++) {
-            const d = document.createElement('span');
-            d.className = 'drop';
-            // randomize across the viewport
-            d.style.left = Math.random() * 100 + 'vw';
-            // random length/speed/delay
-            const h = 12 + Math.random() * 20;     // 12–32px
-            const dur = 1.8 + Math.random() * 2.4; // 1.8–4.2s
-            const delay = Math.random() * 3.0;     // 0–3s
-            d.style.height = h + 'px';
-            d.style.animationDuration = dur + 's';
-            d.style.animationDelay = delay + 's';
-            wrap.appendChild(d);
-          }
-        })();
-    </script>
 </body>
 </html>
