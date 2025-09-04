@@ -5,14 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MR GAMES+ BETA</title>
 
-  <!-- icons -->
+  <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
   <link rel="apple-touch-icon" href="/favicon.png">
 
-  <!-- core script -->
+  <!-- Core Panic Cloak -->
   <script src="cloak_panic.js"></script>
-
   <script>
     window.addEventListener('beforeunload', function (event) {
       event.preventDefault();
@@ -24,15 +22,14 @@
   <!-- Neon Styles -->
   <style>
     html, body { height: 100%; margin: 0; }
+
     body.dark-mode {
       background:
         radial-gradient(120% 120% at 50% 10%, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0) 40%),
         linear-gradient(160deg, #0f2027 0%, #203a43 40%, #2c5364 100%);
-      background-attachment: fixed, fixed;
+      background-attachment: fixed;
       color: #e6fff9;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
     }
 
     header, main, footer, #zoneViewer, #popupOverlay, .adsbygoogle {
@@ -40,10 +37,10 @@
       z-index: 2;
     }
 
-    /* Logo + Beta */
-    .header-content .logo {
-      color: #0ff;
-      text-shadow: 0 0 8px #0ff, 0 0 16px #0ff, 0 0 24px #0ff;
+    /* Logo + Badge */
+    .logo {
+      color: #04D9FF;
+      text-shadow: 0 0 8px #04D9FF, 0 0 16px #04D9FF, 0 0 24px #04D9FF;
       font-size: 2rem;
       font-weight: 700;
     }
@@ -55,50 +52,79 @@
       font-weight: 700;
       color: #000;
       background: rgba(255,255,255,0.06);
-      text-shadow: 0 0 6px #f0db4f, 0 0 12px #f0db4f, 0 0 22px #f0db4f;
+      text-shadow: 0 0 6px #04D9FF, 0 0 12px #04D9FF, 0 0 22px #04D9FF;
       box-shadow: 0 6px 18px rgba(0,0,0,0.35);
-      vertical-align: middle;
       font-size: 0.95rem;
     }
 
-    /* Search + Sort */
-    .search-container { display: flex; gap: 8px; align-items: center; }
-    .search-container input#searchBar,
-    .search-container select#sortOptions {
-      padding: 10px 12px;
+    /* Search */
+    .search-container {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .search-container input,
+    .search-container select {
+      padding: 10px;
       border-radius: 10px;
       border: none;
       outline: none;
       background: rgba(0,0,0,0.45);
       color: #e6fff9;
-      box-shadow: inset 0 0 8px rgba(0,255,255,0.4);
+      box-shadow: inset 0 0 8px rgba(4,217,255,0.4);
+      transition: box-shadow 0.3s ease;
     }
-    .search-container input#searchBar:focus,
-    .search-container select#sortOptions:focus {
-      box-shadow: 0 0 20px rgba(0,255,255,0.6);
+    .search-container input:focus,
+    .search-container select:focus {
+      box-shadow: 0 0 20px rgba(4,217,255,0.6);
     }
 
-    /* Neon Buttons + Links */
+    /* Zone cards */
+    .zone-card {
+      display: inline-block;
+      background: rgba(0,0,0,0.55);
+      border: 1px solid rgba(4,217,255,0.3);
+      border-radius: 10px;
+      padding: 10px;
+      margin: 10px;
+      text-align: center;
+      color: #e6fff9;
+      box-shadow: 0 0 12px rgba(4,217,255,0.2);
+      width: 180px;
+      transition: transform 0.2s ease, box-shadow 0.3s ease;
+    }
+    .zone-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 0 20px rgba(4,217,255,0.5);
+    }
+    .zone-card img {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 8px;
+      box-shadow: 0 0 10px rgba(4,217,255,0.4);
+    }
+    .zone-card h3 {
+      color: #04D9FF;
+      text-shadow: 0 0 4px #04D9FF, 0 0 8px #04D9FF;
+      font-size: 1.1rem;
+      margin: 8px 0;
+    }
+
+    /* Neon buttons */
     button, a {
-      color: #0ff;
-      text-shadow: 0 0 6px #0ff;
+      color: #04D9FF;
+      text-shadow: 0 0 6px #04D9FF;
       transition: box-shadow 0.3s ease, color 0.3s ease;
     }
     button:hover, a:hover {
       color: #f0db4f;
       text-shadow: 0 0 8px #f0db4f, 0 0 16px #f0db4f;
-      box-shadow: 0 0 15px #0ff, inset 0 0 8px #0ff;
+      box-shadow: 0 0 15px #04D9FF inset;
     }
 
-    /* Zone containers */
-    .zone-container, #container {
-      border: 1px solid rgba(0,255,255,0.3);
-      box-shadow: 0 0 10px rgba(0,255,255,0.2), 0 0 20px rgba(0,255,255,0.1);
-      padding: 8px;
-      border-radius: 6px;
-    }
-
-    /* Rain Layer */
+    /* Rain layer */
     .mgplus-rain {
       position: fixed;
       inset: 0;
@@ -115,76 +141,36 @@
       background: linear-gradient(180deg, rgba(0,255,255,0.6), rgba(0,255,255,0));
       filter: blur(0.2px);
       will-change: transform;
-      animation-name: mgplus-fall;
-      animation-timing-function: linear;
-      animation-iteration-count: infinite;
+      animation: mgplus-fall linear infinite;
     }
     @keyframes mgplus-fall {
       to { transform: translateY(140vh); }
     }
 
     #zoneViewer { z-index: 3; }
-
-    @media (max-width: 520px) {
-      .header-content { flex-wrap: wrap; gap: 8px; }
-      .beta-badge { margin-left: 6px; margin-top: 6px; }
-    }
   </style>
 
-  <!-- Google / Analytics -->
+  <!-- Google Ads + Analytics -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5521219086088837" crossorigin="anonymous"></script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-WX5VS54ZDW"></script>
   <meta name="google-adsense-account" content="ca-pub-5521219086088837">
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
+    function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     gtag('config', 'G-WX5VS54ZDW');
   </script>
-  <script async src="https://fundingchoicesmessages.google.com/i/pub-5521219086088837?ers=1"></script>
-  <script>
-    (function() {
-      function signalGooglefcPresent() {
-        if (!window.frames['googlefcPresent']) {
-          if (document.body) {
-            const iframe = document.createElement('iframe');
-            iframe.style = 'width: 0; height: 0; border: none; z-index: -1000; left: -1000px; top: -1000px;';
-            iframe.style.display = 'none';
-            iframe.name = 'googlefcPresent';
-            document.body.appendChild(iframe);
-          } else {
-            setTimeout(signalGooglefcPresent, 0);
-          }
-        }
-      }
-      signalGooglefcPresent();
-    })();
-  </script>
-  <script src="https://cdn.jsdelivr.net/gh/gn-math/gn-math.github.io@main/gnmath.js"></script>
-
-  <meta name="title" content="GN-Math">
-  <meta name="description" content="Play unbl*cked games like Crazy Cattle 3D and DriveMad on GN-Math. Fast, free, no downloads—perfect for school or home.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://gn-math.github.io/">
-  <meta property="og:title" content="GN-Math">
-  <meta property="og:description" content="Play unbl*cked games like Crazy Cattle 3D and DriveMad on GN-Math. Fast, free, no downloads—perfect for school or home.">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:url" content="https://gn-math.github.io/">
-  <meta name="twitter:title" content="GN-Math">
-  <meta name="twitter:description" content="Play unbl*cked games like Crazy Cattle 3D and DriveMad on GN-Math. Fast, free, no downloads—perfect for school or home.">
-
-  <link rel="stylesheet" href="style.css">
 </head>
-
 <body class="dark-mode">
-  <!-- Rain layer -->
+  <!-- Rain -->
   <div class="mgplus-rain" aria-hidden="true"></div>
 
+  <!-- Header -->
   <header>
     <div class="header-content" style="display:flex; align-items:center; gap:10px; justify-content:space-between;">
       <div style="display:flex; align-items:center; gap:8px;">
         <div class="logo">MR GAMES</div>
-        <div class="beta-badge" aria-hidden="true">MR GAMES+ BETA</div>
+        <div class="beta-badge">MR GAMES+ BETA</div>
       </div>
       <div class="search-container">
         <input type="text" id="searchBar" placeholder="Search zones..." oninput="filterZones()">
@@ -200,32 +186,48 @@
     </div>
   </header>
 
+  <!-- Ads -->
   <ins class="adsbygoogle"
-      style="display:block; text-align:center;"
-      data-ad-client="ca-pub-5521219086088837"
-      data-ad-slot="5549138288"
-      data-ad-format="auto"
-      data-full-width-responsive="true">
-  </ins>
+       style="display:block; text-align:center;"
+       data-ad-client="ca-pub-5521219086088837"
+       data-ad-slot="5549138288"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 
+  <!-- Main -->
   <main>
     <details id="featuredZonesWrapper" open>
       <summary id="allZonesSummary">Featured Zones</summary>
-      <div id="featuredZones" class="zone-container"></div>
+      <div id="featuredZones" class="zone-container">
+        <!-- Example Zone Cards -->
+        <div class="zone-card">
+          <img src="images/crazycattle3d.png" alt="Crazy Cattle 3D">
+          <h3>Crazy Cattle 3D</h3>
+          <button onclick="openZone('crazycattle3d')">Play</button>
+        </div>
+        <div class="zone-card">
+          <img src="images/drivemad.png" alt="DriveMad">
+          <h3>DriveMad</h3>
+          <button onclick="openZone('drivemad')">Play</button>
+        </div>
+      </div>
     </details>
+
     <br><hr><br>
+
     <details id="allZonesWrapper" open>
       <summary id="allSummary">All Zones</summary>
       <div id="container">Loading...</div>
     </details>
   </main>
 
+  <!-- Zone Viewer -->
   <div id="zoneViewer">
     <div class="zone-header">
       <div class="zone-title">
         <h2 id="zoneName">zone</h2>
-        <span id="zoneId" style="display: none;"></span>
+        <span id="zoneId" style="display:none;"></span>
         <a id="zoneAuthor" href="#" target="_blank">by Author</a>
       </div>
       <div class="zone-controls">
@@ -238,6 +240,7 @@
     <iframe id="zoneFrame"></iframe>
   </div>
 
+  <!-- Popup -->
   <div id="popupOverlay">
     <div class="popup">
       <div class="popup-header">
@@ -248,30 +251,33 @@
     </div>
   </div>
 
+  <!-- Ads -->
   <ins class="adsbygoogle"
-      style="display:block; text-align:center;"
-      data-ad-client="ca-pub-5521219086088837"
-      data-ad-slot="5549138288"
-      data-ad-format="auto"
-      data-full-width-responsive="true">
-  </ins>
+       style="display:block; text-align:center;"
+       data-ad-client="ca-pub-5521219086088837"
+       data-ad-slot="5549138288"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 
+  <!-- Footer -->
   <footer>
     <div class="footer-links">
       <a href="#" onclick="showContact(); return false;">Contact</a>
       <a href="#" onclick="loadPrivacy(); return false;">Privacy Policy</a>
       <a href="javascript:saveData()">Export Data</a>
       <a href="#" onclick="document.getElementById('importData').click(); return false;">Import Data</a>
-      <input type="file" id="importData" style="display: none;" onchange="loadData(event)">
+      <input type="file" id="importData" style="display:none;" onchange="loadData(event)">
     </div>
   </footer>
 
+  <!-- Site Scripts -->
   <script src="script.js"></script>
   <script>
     const search = new URLSearchParams(window.location.search);
-    if (search.get('privacy')) { loadPrivacy(); }
+    if (search.get('privacy')) loadPrivacy();
 
+    // Neon rain
     (function makeRain() {
       const wrap = document.querySelector('.mgplus-rain');
       if (!wrap) return;
