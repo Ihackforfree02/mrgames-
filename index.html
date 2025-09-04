@@ -280,6 +280,47 @@
       <input type="file" id="importData" style="display:none;" onchange="loadData(event)">
     </div>
   </footer>
+<!-- Chat Button -->
+  <div id="chat-toggle" onclick="toggleChat()">💬 Chat</div>
+
+  <!-- Partner Badge -->
+  <a href="https://ezunblocktheopps.github.io/" class="partner-badge" target="_blank">
+    🤝 Partnered with Sigmi
+  </a>
+
+  <!-- Scripts -->
+  <script src="cloak_panic.js"></script>
+  <script>
+    // Redirect safeguard
+    if (!location.pathname.includes('index.html') && location.pathname === '/') {
+      window.location.href = 'index.html';
+    }
+
+    // Offline checker
+    function checkConnectivity() {
+      if (!navigator.onLine) {
+        alert("You're offline. Chat may not work.");
+      }
+    }
+    window.addEventListener('load', checkConnectivity);
+    window.addEventListener('online', () => alert("You're back online!"));
+    window.addEventListener('offline', () => alert("You've lost connection."));
+
+    // Chat popup
+    function toggleChat() {
+      if (window.chatWindow && !window.chatWindow.closed) {
+        window.chatWindow.focus();
+      } else {
+        window.chatWindow = window.open(
+          'https://forum.whatthesigma.site/home',
+          'ChatWindow',
+          'width=400,height=600'
+        );
+        if (!window.chatWindow) {
+          alert("Popup blocked! Please allow popups to use chat.");
+        }
+      }
+    }
 
   <!-- site JS -->
   <script src="script.js"></script>
@@ -304,6 +345,7 @@
   </script>
 </body>
 </html>
+
 
 
 
