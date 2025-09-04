@@ -10,7 +10,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
   <link rel="apple-touch-icon" href="/favicon.png">
 
-  <!-- core script (keeps your logic intact) -->
+  <!-- core script -->
   <script src="cloak_panic.js"></script>
 
   <script>
@@ -21,91 +21,89 @@
     });
   </script>
 
-  <!-- Lightweight styles added here to avoid touching your external stylesheet -->
+  <!-- Neon Styles -->
   <style>
-    /* --- Ensure layout stacking so rain never blocks clicks/iframes --- */
     html, body { height: 100%; margin: 0; }
     body.dark-mode {
       background:
         radial-gradient(120% 120% at 50% 10%, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0) 40%),
         linear-gradient(160deg, #0f2027 0%, #203a43 40%, #2c5364 100%);
       background-attachment: fixed, fixed;
-      color: #fff;
+      color: #e6fff9;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
     }
 
-    /* Keep all main interactive content above the rain layer */
     header, main, footer, #zoneViewer, #popupOverlay, .adsbygoogle {
       position: relative;
       z-index: 2;
     }
 
-    /* MR GAMES logo (keeps your original look but white so visible on new bg) */
+    /* Logo + Beta */
     .header-content .logo {
-      color: #ffffff;
-      text-shadow:
-        0 0 6px rgba(240,219,79,0.9),
-        0 0 12px rgba(240,219,79,0.7),
-        0 0 24px rgba(240,219,79,0.45);
+      color: #0ff;
+      text-shadow: 0 0 8px #0ff, 0 0 16px #0ff, 0 0 24px #0ff;
       font-size: 2rem;
       font-weight: 700;
     }
-
-    /* MR GAMES+ BETA badge — moved into header so it's valid and visible.
-       It follows your earlier request: black base text with neon yellow glow */
     .beta-badge {
       display: inline-block;
       margin-left: 12px;
       padding: 6px 10px;
       border-radius: 8px;
       font-weight: 700;
-      color: #000; /* black base text */
+      color: #000;
       background: rgba(255,255,255,0.06);
-      text-shadow:
-        0 0 6px #f0db4f,
-        0 0 12px #f0db4f,
-        0 0 22px #f0db4f;
+      text-shadow: 0 0 6px #f0db4f, 0 0 12px #f0db4f, 0 0 22px #f0db4f;
       box-shadow: 0 6px 18px rgba(0,0,0,0.35);
       vertical-align: middle;
       font-size: 0.95rem;
     }
 
-    /* Search container: slight neon accent so it stands out but doesn't break JS */
-    .search-container input#searchBar {
+    /* Search + Sort */
+    .search-container { display: flex; gap: 8px; align-items: center; }
+    .search-container input#searchBar,
+    .search-container select#sortOptions {
       padding: 10px 12px;
       border-radius: 10px;
       border: none;
       outline: none;
       background: rgba(0,0,0,0.45);
       color: #e6fff9;
-      box-shadow: 0 0 10px rgba(0,220,220,0.08), inset 0 1px 0 rgba(255,255,255,0.02);
+      box-shadow: inset 0 0 8px rgba(0,255,255,0.4);
     }
-    .search-container select#sortOptions {
-      padding: 10px;
-      border-radius: 10px;
-      border: none;
-      background: rgba(0,0,0,0.45);
-      color: #e6fff9;
+    .search-container input#searchBar:focus,
+    .search-container select#sortOptions:focus {
+      box-shadow: 0 0 20px rgba(0,255,255,0.6);
     }
 
-    /* Optional: subtle glow around search to match neon look */
-    .search-container {
-      display: flex;
-      gap: 8px;
-      align-items: center;
+    /* Neon Buttons + Links */
+    button, a {
+      color: #0ff;
+      text-shadow: 0 0 6px #0ff;
+      transition: box-shadow 0.3s ease, color 0.3s ease;
     }
-    .search-container input#searchBar:focus {
-      box-shadow: 0 0 18px rgba(0,220,220,0.25);
+    button:hover, a:hover {
+      color: #f0db4f;
+      text-shadow: 0 0 8px #f0db4f, 0 0 16px #f0db4f;
+      box-shadow: 0 0 15px #0ff, inset 0 0 8px #0ff;
     }
 
-    /* Rain layer — sits under content, pointer-events none so it won't block clicks */
+    /* Zone containers */
+    .zone-container, #container {
+      border: 1px solid rgba(0,255,255,0.3);
+      box-shadow: 0 0 10px rgba(0,255,255,0.2), 0 0 20px rgba(0,255,255,0.1);
+      padding: 8px;
+      border-radius: 6px;
+    }
+
+    /* Rain Layer */
     .mgplus-rain {
       position: fixed;
       inset: 0;
       pointer-events: none;
-      z-index: 0; /* BELOW all interactive content (which are z-index:2) */
+      z-index: 0;
       overflow: hidden;
     }
     .mgplus-rain .drop {
@@ -125,17 +123,15 @@
       to { transform: translateY(140vh); }
     }
 
-    /* Make sure the zone viewer (iframe overlay) keeps its normal behavior */
     #zoneViewer { z-index: 3; }
 
-    /* small responsive tweak so header content doesn't overlap on tiny screens */
     @media (max-width: 520px) {
       .header-content { flex-wrap: wrap; gap: 8px; }
       .beta-badge { margin-left: 6px; margin-top: 6px; }
     }
   </style>
 
-  <!-- Google / Analytics (unchanged) -->
+  <!-- Google / Analytics -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5521219086088837" crossorigin="anonymous"></script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-WX5VS54ZDW"></script>
   <meta name="google-adsense-account" content="ca-pub-5521219086088837">
@@ -145,7 +141,6 @@
     gtag('js', new Date());
     gtag('config', 'G-WX5VS54ZDW');
   </script>
-
   <script async src="https://fundingchoicesmessages.google.com/i/pub-5521219086088837?ers=1"></script>
   <script>
     (function() {
@@ -165,7 +160,6 @@
       signalGooglefcPresent();
     })();
   </script>
-
   <script src="https://cdn.jsdelivr.net/gh/gn-math/gn-math.github.io@main/gnmath.js"></script>
 
   <meta name="title" content="GN-Math">
@@ -183,18 +177,15 @@
 </head>
 
 <body class="dark-mode">
-  <!-- Rain layer (generated by JS below) -->
+  <!-- Rain layer -->
   <div class="mgplus-rain" aria-hidden="true"></div>
 
   <header>
     <div class="header-content" style="display:flex; align-items:center; gap:10px; justify-content:space-between;">
-      <!-- Brand group (MR GAMES + MR GAMES+ BETA badge) -->
       <div style="display:flex; align-items:center; gap:8px;">
         <div class="logo">MR GAMES</div>
         <div class="beta-badge" aria-hidden="true">MR GAMES+ BETA</div>
       </div>
-
-      <!-- Search & sort -->
       <div class="search-container">
         <input type="text" id="searchBar" placeholder="Search zones..." oninput="filterZones()">
         <select id="sortOptions" onchange="sortZones()">
@@ -203,15 +194,12 @@
           <option value="popular">Popular</option>
         </select>
       </div>
-
-      <!-- keep settings (left intact as you had it earlier) -->
       <div class="control-buttons">
-        <button id="settings" style="background-color: var(--primary-color); color: white; border: none; border-radius: 4px; padding: 0.5rem 1rem; font-size: 16px; cursor: pointer;">Settings</button>
+        <button id="settings">Settings</button>
       </div>
     </div>
   </header>
 
-  <!-- ads (unchanged) -->
   <ins class="adsbygoogle"
       style="display:block; text-align:center;"
       data-ad-client="ca-pub-5521219086088837"
@@ -223,14 +211,12 @@
 
   <main>
     <details id="featuredZonesWrapper" open>
-      <summary id="allZonesSummary" style="font-size: 1.2rem; font-weight: bold; cursor: pointer;">Featured Zones</summary>
+      <summary id="allZonesSummary">Featured Zones</summary>
       <div id="featuredZones" class="zone-container"></div>
     </details>
-
     <br><hr><br>
-
     <details id="allZonesWrapper" open>
-      <summary id="allSummary" style="font-size: 1.2rem; font-weight: bold; cursor: pointer;">All Zones</summary>
+      <summary id="allSummary">All Zones</summary>
       <div id="container">Loading...</div>
     </details>
   </main>
@@ -281,28 +267,22 @@
     </div>
   </footer>
 
-  <!-- keep your site JS last so everything else is loaded first -->
   <script src="script.js"></script>
-
   <script>
     const search = new URLSearchParams(window.location.search);
-    const privacy = search.get('privacy');
-    if (privacy) { loadPrivacy(); }
+    if (search.get('privacy')) { loadPrivacy(); }
 
-    /* ------- generate unobtrusive rainfall (DOM-based) -------
-       It's intentionally lighter than before so it doesn't distract or overlap interactive UI.
-       If you prefer more/less rain, change 'count'. */
     (function makeRain() {
       const wrap = document.querySelector('.mgplus-rain');
       if (!wrap) return;
-      const count = 80; // tweak: raise for heavier rain
+      const count = 80;
       for (let i = 0; i < count; i++) {
         const d = document.createElement('span');
         d.className = 'drop';
         d.style.left = (Math.random() * 100) + 'vw';
-        const h = 10 + Math.random() * 24;     // px height
-        const dur = 1.2 + Math.random() * 2.8; // seconds
-        const delay = Math.random() * 3.0;     // seconds
+        const h = 10 + Math.random() * 24;
+        const dur = 1.2 + Math.random() * 2.8;
+        const delay = Math.random() * 3.0;
         d.style.height = h + 'px';
         d.style.animationDuration = dur + 's';
         d.style.animationDelay = delay + 's';
