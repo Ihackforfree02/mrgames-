@@ -12,6 +12,51 @@
 
   <!-- panic cloak -->
   <script src="cloak_panic.js"></script>
+<style>
+  /* override any old red bar styles */
+  header {
+    position: relative;
+    background: #000 !important; /* force black */
+    padding: 12px;
+    border: 2px solid #00cfff;
+    border-radius: 10px;
+    box-shadow:
+      0 0 12px #00cfff,
+      0 0 24px rgba(0,200,255,0.7),
+      inset 0 0 10px rgba(0,200,255,0.4);
+    margin: 8px;
+    overflow: hidden; /* so stars don’t spill out */
+  }
+
+  /* neon star background inside header */
+  header::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(2px 2px at 20% 30%, #00cfff, transparent),
+      radial-gradient(1.5px 1.5px at 70% 60%, #00f6ff, transparent),
+      radial-gradient(2px 2px at 40% 80%, #00cfff, transparent),
+      radial-gradient(1px 1px at 85% 25%, #00f6ff, transparent),
+      radial-gradient(2px 2px at 10% 70%, #00cfff, transparent);
+    background-size: cover;
+    animation: starShift 12s linear infinite;
+    opacity: 0.6;
+  }
+
+  @keyframes starShift {
+    from { transform: translateY(0); }
+    to { transform: translateY(-10%); }
+  }
+
+  .header-content {
+    position: relative; /* keep content above stars */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 2;
+  }
+</style>
 
   <script>
     window.addEventListener('beforeunload', function (event) {
@@ -260,3 +305,4 @@
   </script>
 </body>
 </html>
+
