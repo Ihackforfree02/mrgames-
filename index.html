@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>MR GAMES+ BETA</title>
 
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png">
-  <link rel="apple-touch-icon" href="/favicon.png">
+  <!-- Icons -->
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <link rel="apple-touch-icon" href="/favicon.png" />
 
-  <!-- Core Panic Cloak -->
+  <!-- Panic / leave prompt -->
   <script src="cloak_panic.js"></script>
   <script>
     window.addEventListener('beforeunload', function (event) {
@@ -19,161 +19,158 @@
     });
   </script>
 
-  <!-- Neon Styles -->
+  <!-- Neon Space-Blue theme -->
   <style>
-    html, body { height: 100%; margin: 0; }
+    :root {
+      --accent: #04D9FF;   /* neon space blue */
+      --accent-soft: rgba(4, 217, 255, 0.45);
+      --accent-border: rgba(4, 217, 255, 0.3);
+      --text: #e6fff9;
+      --bg-dark-1: #0f2027;
+      --bg-dark-2: #203a43;
+      --bg-dark-3: #2c5364;
+    }
 
-    body.dark-mode {
+    html, body { height:100%; margin:0; }
+    body.dark-mode{
       background:
         radial-gradient(120% 120% at 50% 10%, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0) 40%),
-        linear-gradient(160deg, #0f2027 0%, #203a43 40%, #2c5364 100%);
-      background-attachment: fixed;
-      color: #e6fff9;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        linear-gradient(160deg, var(--bg-dark-1) 0%, var(--bg-dark-2) 40%, var(--bg-dark-3) 100%);
+      color: var(--text);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+      -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
     }
 
+    /* Keep interactivity above rain */
     header, main, footer, #zoneViewer, #popupOverlay, .adsbygoogle {
-      position: relative;
-      z-index: 2;
+      position: relative; z-index: 2;
     }
 
-    /* Logo + Badge */
+    /* Header */
+    .header-content { display:flex; align-items:center; gap:10px; justify-content:space-between; padding:12px 16px; }
     .logo {
-      color: #04D9FF;
-      text-shadow: 0 0 8px #04D9FF, 0 0 16px #04D9FF, 0 0 24px #04D9FF;
-      font-size: 2rem;
-      font-weight: 700;
+      color: var(--accent);
+      text-shadow: 0 0 8px var(--accent), 0 0 16px var(--accent), 0 0 24px var(--accent);
+      font-size: 2rem; font-weight: 800; letter-spacing: .5px;
     }
     .beta-badge {
-      display: inline-block;
-      margin-left: 12px;
-      padding: 6px 10px;
-      border-radius: 8px;
-      font-weight: 700;
-      color: #000;
-      background: rgba(255,255,255,0.06);
-      text-shadow: 0 0 6px #04D9FF, 0 0 12px #04D9FF, 0 0 22px #04D9FF;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.35);
-      font-size: 0.95rem;
+      display:inline-block; margin-left:12px; padding:6px 10px; border-radius:10px;
+      font-weight:700; color:#000; background: rgba(255,255,255,.06);
+      text-shadow:0 0 6px var(--accent), 0 0 12px var(--accent), 0 0 22px var(--accent);
+      box-shadow:0 6px 18px rgba(0,0,0,.35);
+      font-size:.95rem;
+    }
+    /* Replace old "red bar" with neon space-blue accent */
+    .header-accent {
+      height:4px;
+      background: radial-gradient(120% 120% at 50% 50%, var(--accent) 0%, rgba(4,217,255,0.2) 55%, transparent 70%);
+      box-shadow: 0 0 18px var(--accent), 0 0 36px rgba(4,217,255,.6);
     }
 
     /* Search */
-    .search-container {
-      display: flex;
-      gap: 8px;
-      align-items: center;
+    .search-container { display:flex; gap:8px; align-items:center; }
+    .search-container input, .search-container select{
+      padding:10px; border-radius:10px; border:none; outline:none;
+      background: rgba(0,0,0,.45); color: var(--text);
+      box-shadow: inset 0 0 8px var(--accent-soft);
+      transition: box-shadow .25s ease;
     }
-    .search-container input,
-    .search-container select {
-      padding: 10px;
-      border-radius: 10px;
-      border: none;
-      outline: none;
-      background: rgba(0,0,0,0.45);
-      color: #e6fff9;
-      box-shadow: inset 0 0 8px rgba(4,217,255,0.4);
-      transition: box-shadow 0.3s ease;
-    }
-    .search-container input:focus,
-    .search-container select:focus {
-      box-shadow: 0 0 20px rgba(4,217,255,0.6);
+    .search-container input:focus, .search-container select:focus{
+      box-shadow: 0 0 20px rgba(4,217,255,.6);
     }
 
-    /* Zone cards */
+    /* Neon links & buttons */
+    button, a { color: var(--accent); text-shadow: 0 0 6px var(--accent); transition: box-shadow .3s ease, color .3s ease, transform .15s ease; }
+    button:hover, a:hover { color:#f0db4f; text-shadow: 0 0 8px #f0db4f, 0 0 16px #f0db4f; box-shadow: 0 0 15px var(--accent) inset; transform: translateY(-1px); }
+
+    /* Zone containers / cards */
+    .zone-container { display:flex; flex-wrap:wrap; gap:12px; }
     .zone-card {
-      display: inline-block;
-      background: rgba(0,0,0,0.55);
-      border: 1px solid rgba(4,217,255,0.3);
-      border-radius: 10px;
-      padding: 10px;
-      margin: 10px;
-      text-align: center;
-      color: #e6fff9;
-      box-shadow: 0 0 12px rgba(4,217,255,0.2);
-      width: 180px;
-      transition: transform 0.2s ease, box-shadow 0.3s ease;
+      background: rgba(0,0,0,.55);
+      border:1px solid var(--accent-border);
+      border-radius:12px; padding:12px; width: 200px;
+      box-shadow: 0 0 12px rgba(4,217,255,.2);
+      display:flex; flex-direction:column; align-items:center;
+      transition: transform .2s ease, box-shadow .3s ease;
     }
-    .zone-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 0 20px rgba(4,217,255,0.5);
-    }
+    .zone-card:hover { transform: translateY(-4px); box-shadow: 0 0 22px rgba(4,217,255,.5); }
     .zone-card img {
-      width: 100%;
-      height: 120px;
-      object-fit: cover;
-      border-radius: 8px;
-      margin-bottom: 8px;
-      box-shadow: 0 0 10px rgba(4,217,255,0.4);
+      width:100%; height:120px; object-fit:cover; border-radius:10px; margin-bottom:10px;
+      box-shadow: 0 0 10px rgba(4,217,255,.4);
     }
     .zone-card h3 {
-      color: #04D9FF;
-      text-shadow: 0 0 4px #04D9FF, 0 0 8px #04D9FF;
-      font-size: 1.1rem;
-      margin: 8px 0;
+      margin:6px 0 10px; font-size:1.05rem; text-align:center;
+      color: var(--accent); text-shadow: 0 0 4px var(--accent), 0 0 8px var(--accent);
+    }
+    .zone-card .meta { font-size:.8rem; opacity:.85; }
+
+    /* Details headings */
+    summary { font-size:1.15rem; font-weight:700; cursor:pointer; color: var(--accent); text-shadow: 0 0 6px var(--accent); }
+
+    /* Neon HR */
+    hr { height:1px; border:none; background: linear-gradient(90deg, transparent, var(--accent), transparent); box-shadow: 0 0 18px rgba(4,217,255,.5); }
+
+    /* Viewer */
+    #zoneViewer { display:none; padding:10px 16px; }
+    #zoneViewer.active { display:block; }
+    .zone-header{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:8px; }
+    .zone-title h2{ margin:0; color: var(--accent); text-shadow: 0 0 6px var(--accent), 0 0 12px var(--accent); }
+    .zone-controls button{ background: rgba(0,0,0,.4); border:1px solid var(--accent-border); border-radius:8px; padding:8px 12px; }
+
+    #zoneFrame{
+      width:100%;
+      height:70vh;
+      background: #000;
+      border:1px solid var(--accent-border);
+      border-radius:12px;
+      box-shadow: 0 0 16px rgba(4,217,255,.35), inset 0 0 24px rgba(4,217,255,.05);
     }
 
-    /* Neon buttons */
-    button, a {
-      color: #04D9FF;
-      text-shadow: 0 0 6px #04D9FF;
-      transition: box-shadow 0.3s ease, color 0.3s ease;
-    }
-    button:hover, a:hover {
-      color: #f0db4f;
-      text-shadow: 0 0 8px #f0db4f, 0 0 16px #f0db4f;
-      box-shadow: 0 0 15px #04D9FF inset;
-    }
+    /* Popup */
+    #popupOverlay { display:none; position:fixed; inset:0; background: rgba(0,0,0,.6); backdrop-filter: blur(2px); z-index: 5; }
+    #popupOverlay.active{ display:flex; align-items:center; justify-content:center; }
+    .popup{ width:min(720px, 92vw); background: rgba(0,0,0,.8); border:1px solid var(--accent-border); border-radius:12px; box-shadow: 0 0 20px rgba(4,217,255,.4); }
+    .popup-header{ display:flex; align-items:center; justify-content:space-between; padding:10px 14px; border-bottom:1px solid var(--accent-border); }
+    .popup-header h3{ margin:0; color: var(--accent); text-shadow: 0 0 6px var(--accent); }
+    #popupBody{ padding:14px; }
 
-    /* Rain layer */
-    .mgplus-rain {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 0;
-      overflow: hidden;
-    }
-    .mgplus-rain .drop {
-      position: absolute;
-      top: -20vh;
-      width: 2px;
-      border-radius: 1px;
-      opacity: 0.35;
-      background: linear-gradient(180deg, rgba(0,255,255,0.6), rgba(0,255,255,0));
-      filter: blur(0.2px);
-      will-change: transform;
-      animation: mgplus-fall linear infinite;
-    }
-    @keyframes mgplus-fall {
-      to { transform: translateY(140vh); }
-    }
+    /* Rain */
+    .mgplus-rain { position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden; }
+    .drop{ position:absolute; top:-20vh; width:2px; border-radius:1px; opacity:.35; background: linear-gradient(180deg, rgba(0,255,255,.6), rgba(0,255,255,0)); filter: blur(.2px); will-change: transform; animation: mgplus-fall linear infinite; }
+    @keyframes mgplus-fall { to { transform: translateY(140vh); } }
 
-    #zoneViewer { z-index: 3; }
+    @media (max-width: 560px){
+      .header-content { flex-wrap:wrap; gap:8px; }
+      .beta-badge{ margin-left:6px; margin-top:6px; }
+      .zone-card{ width: 46%; min-width: 160px; }
+      #zoneFrame{ height: 64vh; }
+    }
   </style>
 
-  <!-- Google Ads + Analytics -->
+  <!-- Ads / Analytics (kept intact) -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5521219086088837" crossorigin="anonymous"></script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-WX5VS54ZDW"></script>
   <meta name="google-adsense-account" content="ca-pub-5521219086088837">
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
+    function gtag(){ dataLayer.push(arguments); }
     gtag('js', new Date());
     gtag('config', 'G-WX5VS54ZDW');
   </script>
 </head>
 <body class="dark-mode">
-  <!-- Rain -->
+  <!-- Rain background -->
   <div class="mgplus-rain" aria-hidden="true"></div>
 
   <!-- Header -->
   <header>
-    <div class="header-content" style="display:flex; align-items:center; gap:10px; justify-content:space-between;">
+    <div class="header-content">
       <div style="display:flex; align-items:center; gap:8px;">
         <div class="logo">MR GAMES</div>
         <div class="beta-badge">MR GAMES+ BETA</div>
       </div>
       <div class="search-container">
-        <input type="text" id="searchBar" placeholder="Search zones..." oninput="filterZones()">
+        <input type="text" id="searchBar" placeholder="Search games..." oninput="filterZones()">
         <select id="sortOptions" onchange="sortZones()">
           <option value="name">Name</option>
           <option value="id">ID (Date)</option>
@@ -181,14 +178,15 @@
         </select>
       </div>
       <div class="control-buttons">
-        <button id="settings">Settings</button>
+        <button id="settings" onclick="showContact()">Settings</button>
       </div>
     </div>
+    <!-- Neon space-blue bar (replaces “red bar”) -->
+    <div class="header-accent"></div>
   </header>
 
-  <!-- Ads -->
-  <ins class="adsbygoogle"
-       style="display:block; text-align:center;"
+  <!-- Ad -->
+  <ins class="adsbygoogle" style="display:block; text-align:center;"
        data-ad-client="ca-pub-5521219086088837"
        data-ad-slot="5549138288"
        data-ad-format="auto"
@@ -196,33 +194,21 @@
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 
   <!-- Main -->
-  <main>
+  <main style="padding: 10px 16px 24px;">
     <details id="featuredZonesWrapper" open>
-      <summary id="allZonesSummary">Featured Zones</summary>
-      <div id="featuredZones" class="zone-container">
-        <!-- Example Zone Cards -->
-        <div class="zone-card">
-          <img src="images/crazycattle3d.png" alt="Crazy Cattle 3D">
-          <h3>Crazy Cattle 3D</h3>
-          <button onclick="openZone('crazycattle3d')">Play</button>
-        </div>
-        <div class="zone-card">
-          <img src="images/drivemad.png" alt="DriveMad">
-          <h3>DriveMad</h3>
-          <button onclick="openZone('drivemad')">Play</button>
-        </div>
-      </div>
+      <summary id="featuredSummary">Featured Zones</summary>
+      <div id="featuredZones" class="zone-container"></div>
     </details>
 
     <br><hr><br>
 
     <details id="allZonesWrapper" open>
       <summary id="allSummary">All Zones</summary>
-      <div id="container">Loading...</div>
+      <div id="container" class="zone-container">Loading...</div>
     </details>
   </main>
 
-  <!-- Zone Viewer -->
+  <!-- Viewer -->
   <div id="zoneViewer">
     <div class="zone-header">
       <div class="zone-title">
@@ -232,12 +218,12 @@
       </div>
       <div class="zone-controls">
         <button onclick="fullscreenZone()">Fullscreen</button>
-        <button onclick="aboutBlank()">Open in New Tab</button>
+        <button onclick="openInNewTab()">Open in New Tab</button>
         <button onclick="downloadZone()">Download</button>
         <button onclick="closeZone()">Close</button>
       </div>
     </div>
-    <iframe id="zoneFrame"></iframe>
+    <iframe id="zoneFrame" allowfullscreen referrerpolicy="no-referrer"></iframe>
   </div>
 
   <!-- Popup -->
@@ -251,9 +237,8 @@
     </div>
   </div>
 
-  <!-- Ads -->
-  <ins class="adsbygoogle"
-       style="display:block; text-align:center;"
+  <!-- Ad -->
+  <ins class="adsbygoogle" style="display:block; text-align:center;"
        data-ad-client="ca-pub-5521219086088837"
        data-ad-slot="5549138288"
        data-ad-format="auto"
@@ -261,40 +246,356 @@
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 
   <!-- Footer -->
-  <footer>
-    <div class="footer-links">
+  <footer style="padding: 14px 16px 32px;">
+    <div class="footer-links" style="display:flex; gap:12px; flex-wrap:wrap;">
       <a href="#" onclick="showContact(); return false;">Contact</a>
       <a href="#" onclick="loadPrivacy(); return false;">Privacy Policy</a>
       <a href="javascript:saveData()">Export Data</a>
       <a href="#" onclick="document.getElementById('importData').click(); return false;">Import Data</a>
-      <input type="file" id="importData" style="display:none;" onchange="loadData(event)">
+      <input type="file" id="importData" style="display:none;" onchange="loadData(event)" />
     </div>
   </footer>
 
-  <!-- Site Scripts -->
-  <script src="script.js"></script>
+  <!-- App logic (self-contained) -->
   <script>
-    const search = new URLSearchParams(window.location.search);
-    if (search.get('privacy')) loadPrivacy();
+    /***********************
+     * DATA: Games/Zones
+     * - Update or extend this list.
+     * - Each item may specify a direct `url`, otherwise we resolve from `slug`.
+     ***********************/
+    const ZONES = [
+      {
+        id: 20240901,
+        name: "Crazy Cattle 3D",
+        slug: "crazycattle3d",
+        author: "MR GAMES",
+        img: "images/crazycattle3d.png",
+        popular: 97,
+        // If your project has a custom path, set it here:
+        // url: "zones/crazycattle3d/index.html"
+      },
+      {
+        id: 20240902,
+        name: "DriveMad",
+        slug: "drivemad",
+        author: "MR GAMES",
+        img: "images/drivemad.png",
+        popular: 99
+      },
+      {
+        id: 20240903,
+        name: "Slope",
+        slug: "slope",
+        author: "MR GAMES",
+        img: "images/slope.png",
+        popular: 88
+      }
+    ];
 
+    /***********************
+     * STATE
+     ***********************/
+    const state = {
+      zones: [...ZONES],
+      current: null // { zone, url }
+    };
+
+    /***********************
+     * UTILS
+     ***********************/
+    // Fallback image (neon placeholder) if a thumbnail is missing
+    const FALLBACK_IMG = 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
+      <svg xmlns="http://www.w3.org/2000/svg" width="480" height="360">
+        <defs>
+          <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+            <stop offset="0%" stop-color="#00141a"/>
+            <stop offset="100%" stop-color="#062a33"/>
+          </linearGradient>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#g)"/>
+        <text x="50%" y="50%" font-family="Segoe UI, Arial" font-size="28" fill="#04D9FF" text-anchor="middle" dominant-baseline="middle">
+          MR GAMES
+        </text>
+      </svg>`);
+
+    function $(sel, root=document){ return root.querySelector(sel); }
+    function el(tag, props={}, ...children){
+      const node = document.createElement(tag);
+      Object.assign(node, props);
+      for (const c of children){
+        if (typeof c === 'string') node.appendChild(document.createTextNode(c));
+        else if (c) node.appendChild(c);
+      }
+      return node;
+    }
+
+    // Try common URL patterns if zone.url isn't set.
+    async function resolveZoneUrl(zone) {
+      if (zone.url) return zone.url;
+
+      const slug = zone.slug || String(zone.id || '').trim();
+      const candidates = [
+        `zones/${slug}/index.html`,
+        `${slug}/index.html`,
+        `${slug}.html`,
+        slug // if slug itself is a path
+      ];
+
+      for (const url of candidates) {
+        try {
+          const res = await fetch(url, { method: 'HEAD', cache: 'no-store' });
+          if (res.ok) return url;
+        } catch (e) { /* try next */ }
+      }
+      return null;
+    }
+
+    function byIdAsc(a,b){ return (a.id||0) - (b.id||0); }
+    function byNameAsc(a,b){ return a.name.localeCompare(b.name); }
+    function byPopularDesc(a,b){ return (b.popular||0) - (a.popular||0); }
+
+    /***********************
+     * RENDERING
+     ***********************/
+    function renderZones(list, container) {
+      container.innerHTML = '';
+      if (!list.length) {
+        container.appendChild(el('div', {className:'meta'}, 'No games match your search.'));
+        return;
+      }
+      list.forEach(zone => {
+        const card = el('div', { className: 'zone-card' });
+        const img = el('img', {
+          alt: zone.name,
+          src: zone.img || FALLBACK_IMG
+        });
+        img.onerror = () => { img.src = FALLBACK_IMG; };
+
+        const title = el('h3', {}, zone.name);
+        const meta = el('div', { className: 'meta' }, `by ${zone.author || 'Unknown'}`);
+        const btn = el('button', { onclick: () => openZone(zone.slug || zone.id) }, 'Play');
+
+        card.append(img, title, meta, btn);
+        container.appendChild(card);
+      });
+    }
+
+    function initialRender(){
+      const featured = state.zones.slice().sort(byPopularDesc).slice(0, 6);
+      renderZones(featured, $('#featuredZones'));
+      renderZones(state.zones, $('#container'));
+    }
+
+    /***********************
+     * ACTIONS
+     ***********************/
+    async function openZone(identifier){
+      const idStr = String(identifier).toLowerCase();
+      const zone = state.zones.find(z =>
+        String(z.id) === idStr || (z.slug && z.slug.toLowerCase() === idStr) || z.name.toLowerCase() === idStr
+      );
+      if (!zone){
+        toast('Game not found.'); return;
+      }
+
+      const url = await resolveZoneUrl(zone);
+      if (!url){
+        toast('Could not locate the game files for this entry.'); return;
+      }
+
+      state.current = { zone, url };
+
+      // Update UI
+      $('#zoneName').textContent = zone.name;
+      $('#zoneAuthor').textContent = `by ${zone.author || 'Unknown'}`;
+      $('#zoneAuthor').href = '#';
+      $('#zoneId').textContent = zone.id || '';
+
+      const frame = $('#zoneFrame');
+      // Clear first to force reload if same src
+      frame.removeAttribute('src');
+      // small delay to ensure reload on same URL
+      setTimeout(() => { frame.src = url; }, 0);
+
+      $('#zoneViewer').classList.add('active');
+      window.scrollTo({ top: $('#zoneViewer').offsetTop - 8, behavior: 'smooth' });
+
+      // Safety: notify if content refuses to be framed
+      setTimeout(() => {
+        try {
+          // Accessing contentWindow may throw if cross-origin blocks, but we just detect lack of load
+          if (!frame.contentWindow || frame.contentWindow.length === 0) {
+            // still could be fine; do nothing
+          }
+        } catch(e) {
+          // Likely X-Frame-Options denied
+          // Offer opening in new tab
+          console.warn('Frame access blocked; site may deny embedding.');
+        }
+      }, 2000);
+    }
+
+    function openInNewTab(){
+      if (!state.current){ toast('Open a game first.'); return; }
+      window.open(state.current.url, '_blank', 'noopener,noreferrer');
+    }
+
+    async function downloadZone(){
+      if (!state.current){ toast('Open a game first.'); return; }
+      try{
+        const res = await fetch(state.current.url, { cache:'no-store' });
+        if (!res.ok) throw new Error('HTTP '+res.status);
+        const blob = await res.blob();
+        const a = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+        a.href = url;
+        const safeName = (state.current.zone.slug || state.current.zone.name || 'game').replace(/[^\w.-]+/g,'_');
+        a.download = `${safeName}.html`;
+        document.body.appendChild(a); a.click(); a.remove();
+        URL.revokeObjectURL(url);
+      }catch(e){
+        // Fallback: open in new tab to let user save manually
+        openInNewTab();
+      }
+    }
+
+    function closeZone(){
+      const frame = $('#zoneFrame');
+      frame.removeAttribute('src');
+      $('#zoneViewer').classList.remove('active');
+      state.current = null;
+    }
+
+    function fullscreenZone(){
+      const el = $('#zoneFrame');
+      if (el.requestFullscreen) el.requestFullscreen();
+      else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+      else if (el.msRequestFullscreen) el.msRequestFullscreen();
+    }
+
+    /***********************
+     * FILTER / SORT
+     ***********************/
+    function filterZones(){
+      const q = ($('#searchBar').value || '').trim().toLowerCase();
+      const filtered = state.zones.filter(z =>
+        z.name.toLowerCase().includes(q) ||
+        (z.slug && z.slug.toLowerCase().includes(q)) ||
+        (z.author && z.author.toLowerCase().includes(q))
+      );
+      renderZones(filtered, $('#container'));
+    }
+
+    function sortZones(){
+      const val = $('#sortOptions').value;
+      const arr = [...state.zones];
+      if (val === 'name') arr.sort(byNameAsc);
+      else if (val === 'id') arr.sort(byIdAsc);
+      else if (val === 'popular') arr.sort(byPopularDesc);
+      renderZones(arr, $('#container'));
+    }
+
+    /***********************
+     * MISC UI
+     ***********************/
+    function showContact(){
+      openPopup('Contact', `
+        <p>Need help or want to request a game?</p>
+        <p>Send a message to <strong>support@mrgames.example</strong></p>
+      `);
+    }
+
+    function loadPrivacy(){
+      openPopup('Privacy Policy', `
+        <p>We use basic analytics and ads. No personal data is sold.</p>
+        <p>You can export/import your local preferences below.</p>
+      `);
+    }
+
+    function openPopup(title, html){
+      $('#popupTitle').textContent = title;
+      $('#popupBody').innerHTML = html;
+      $('#popupOverlay').classList.add('active');
+    }
+    function closePopup(){ $('#popupOverlay').classList.remove('active'); }
+
+    function toast(msg){
+      // lightweight toast using popup overlay
+      openPopup('Notice', `<p>${msg}</p>`);
+      setTimeout(closePopup, 1600);
+    }
+
+    function saveData(){
+      const data = {
+        favorites: [], // add your own keys
+        ts: Date.now()
+      };
+      const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'mr-games-data.json';
+      document.body.appendChild(a); a.click(); a.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    function loadData(ev){
+      const file = ev.target.files?.[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try{
+          const data = JSON.parse(reader.result);
+          console.log('Imported data:', data);
+          toast('Data imported.');
+        } catch(e){
+          toast('Invalid file.');
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    /***********************
+     * INIT
+     ***********************/
     // Neon rain
-    (function makeRain() {
-      const wrap = document.querySelector('.mgplus-rain');
-      if (!wrap) return;
+    (function makeRain(){ const wrap = document.querySelector('.mgplus-rain'); if(!wrap) return;
       const count = 80;
-      for (let i = 0; i < count; i++) {
-        const d = document.createElement('span');
-        d.className = 'drop';
-        d.style.left = (Math.random() * 100) + 'vw';
-        const h = 10 + Math.random() * 24;
-        const dur = 1.2 + Math.random() * 2.8;
-        const delay = Math.random() * 3.0;
-        d.style.height = h + 'px';
-        d.style.animationDuration = dur + 's';
-        d.style.animationDelay = delay + 's';
+      for (let i=0;i<count;i++){
+        const d = document.createElement('span'); d.className='drop';
+        d.style.left = (Math.random()*100)+'vw';
+        const h = 10 + Math.random()*24;
+        const dur = 1.2 + Math.random()*2.8;
+        const delay = Math.random()*3.0;
+        d.style.height = h+'px';
+        d.style.animationDuration = dur+'s';
+        d.style.animationDelay = delay+'s';
         wrap.appendChild(d);
       }
     })();
+
+    // Render lists
+    initialRender();
+
+    // Deep link: ?play=slug
+    (function autoOpenFromQuery(){
+      const params = new URLSearchParams(location.search);
+      const play = params.get('play');
+      if (play) openZone(play);
+    })();
+
+    // Expose for inline HTML attributes (if needed)
+    window.filterZones = filterZones;
+    window.sortZones = sortZones;
+    window.openZone = openZone;
+    window.fullscreenZone = fullscreenZone;
+    window.openInNewTab = openInNewTab;
+    window.downloadZone = downloadZone;
+    window.closeZone = closeZone;
+    window.showContact = showContact;
+    window.loadPrivacy = loadPrivacy;
+    window.saveData = saveData;
+    window.loadData = loadData;
+    window.closePopup = closePopup;
   </script>
 </body>
 </html>
