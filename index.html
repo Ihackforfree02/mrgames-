@@ -35,9 +35,10 @@
 
     /* header bar */
     header {
-      background: linear-gradient(90deg, #0a1a2f, #1d3a5f);
+      background: linear-gradient(90deg, #061220, #0f2e4d);
       padding: 12px;
-      box-shadow: 0 0 15px rgba(0,200,255,0.5);
+      box-shadow: 0 0 20px rgba(0,200,255,0.6), inset 0 0 10px rgba(0,200,255,0.4);
+      border-bottom: 2px solid rgba(0,200,255,0.5);
     }
 
     .header-content {
@@ -50,7 +51,7 @@
     /* logo */
     .header-content .logo {
       color: #ffffff;
-      text-shadow: 0 0 6px #00cfff, 0 0 12px #00cfff, 0 0 22px #00cfff;
+      text-shadow: 0 0 6px #00cfff, 0 0 12px #00cfff, 0 0 22px #00cfff, 0 0 40px #00cfff;
       font-size: 2rem;
       font-weight: 700;
     }
@@ -61,10 +62,10 @@
       padding: 6px 10px;
       border-radius: 8px;
       font-weight: 700;
-      color: #000;
-      background: rgba(255,255,255,0.06);
+      color: #fff;
+      background: rgba(0,0,0,0.25);
       text-shadow: 0 0 6px #f0db4f, 0 0 12px #f0db4f, 0 0 22px #f0db4f;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+      box-shadow: 0 0 12px rgba(240,219,79,0.5);
       font-size: 0.95rem;
     }
 
@@ -73,20 +74,61 @@
     .search-container select#sortOptions {
       padding: 10px;
       border-radius: 10px;
-      border: none;
-      background: rgba(0,0,0,0.45);
+      border: 1px solid rgba(0,200,255,0.3);
+      background: rgba(0,0,0,0.55);
       color: #e6fff9;
+      box-shadow: 0 0 8px rgba(0,200,255,0.2);
     }
     .search-container input#searchBar:focus {
-      box-shadow: 0 0 18px rgba(0,220,220,0.25);
+      box-shadow: 0 0 20px rgba(0,220,220,0.5);
+      outline: none;
     }
     .search-container { display: flex; gap: 8px; align-items: center; }
+
+    /* buttons */
+    button {
+      background: rgba(0,200,255,0.15);
+      border: 1px solid rgba(0,200,255,0.5);
+      border-radius: 6px;
+      padding: 0.5rem 1rem;
+      color: #fff;
+      cursor: pointer;
+      text-shadow: 0 0 8px #00cfff;
+      box-shadow: 0 0 10px rgba(0,200,255,0.4);
+      transition: all 0.25s ease;
+    }
+    button:hover {
+      background: rgba(0,200,255,0.3);
+      box-shadow: 0 0 18px rgba(0,200,255,0.7);
+      transform: translateY(-2px);
+    }
 
     /* neon game names */
     .zone-container h3,
     .zone-title h2 {
       color: #fff;
+      text-shadow: 0 0 6px #00cfff, 0 0 12px #00cfff, 0 0 22px #00cfff, 0 0 40px #00cfff;
+    }
+
+    /* neon summary titles */
+    details > summary {
+      font-size: 1.2rem;
+      font-weight: bold;
+      cursor: pointer;
       text-shadow: 0 0 6px #00cfff, 0 0 12px #00cfff, 0 0 22px #00cfff;
+    }
+
+    /* footer links */
+    .footer-links a {
+      margin-right: 12px;
+      color: #00cfff;
+      text-decoration: none;
+      text-shadow: 0 0 6px #00cfff, 0 0 12px #00cfff;
+      transition: all 0.2s ease;
+    }
+    .footer-links a:hover {
+      color: #fff;
+      text-shadow: 0 0 12px #00cfff, 0 0 22px #00cfff;
     }
 
     /* rain */
@@ -124,13 +166,8 @@
   </script>
   <script async src="https://fundingchoicesmessages.google.com/i/pub-5521219086088837?ers=1"></script>
 
-  <!-- game loader (keep original logic) -->
+  <!-- game loader (unchanged) -->
   <script src="https://cdn.jsdelivr.net/gh/gn-math/gn-math.github.io@main/gnmath.js"></script>
-
-  <!-- meta -->
-  <meta name="title" content="GN-Math">
-  <meta name="description" content="Play unbl*cked games like Crazy Cattle 3D and DriveMad on GN-Math. Fast, free, no downloads—perfect for school or home.">
-
   <link rel="stylesheet" href="style.css">
 </head>
 <body class="dark-mode">
@@ -151,7 +188,7 @@
         </select>
       </div>
       <div class="control-buttons">
-        <button id="settings" style="background-color: var(--primary-color); color: white; border: none; border-radius: 4px; padding: 0.5rem 1rem; font-size: 16px; cursor: pointer;">Settings</button>
+        <button id="settings">Settings</button>
       </div>
     </div>
   </header>
@@ -195,15 +232,12 @@
     </div>
   </footer>
 
-  <!-- keep your site JS last -->
+  <!-- site JS -->
   <script src="script.js"></script>
-
   <script>
-    /* privacy param support */
     const search = new URLSearchParams(window.location.search);
     if (search.get('privacy')) { loadPrivacy(); }
 
-    /* rain generator */
     (function makeRain(){
       const wrap = document.querySelector('.mgplus-rain');
       if(!wrap) return;
