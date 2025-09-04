@@ -7,11 +7,21 @@
 
   <!-- icons -->
   <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
   <link rel="apple-touch-icon" href="/favicon.png">
 
   <!-- panic cloak -->
   <script src="cloak_panic.js"></script>
 
+  <script>
+    window.addEventListener('beforeunload', function (event) {
+      event.preventDefault();
+      event.returnValue = '';
+      return 'Are you sure you want to leave? Any unsaved changes will be lost.';
+    });
+  </script>
+
+  <!-- styles -->
   <style>
     html, body { height: 100%; margin: 0; }
     body.dark-mode {
@@ -23,9 +33,9 @@
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
-    /* header bar */
+    /* header bar: black box with neon border */
     header {
-      background: #000 !important;
+      background: #000;
       padding: 12px;
       border: 2px solid #00cfff;
       border-radius: 10px;
@@ -34,62 +44,144 @@
         0 0 24px rgba(0,200,255,0.7),
         inset 0 0 10px rgba(0,200,255,0.4);
       margin: 8px;
-      overflow: hidden;
-      position: relative;
     }
-    header::before {
-      content:"";
-      position:absolute; inset:0;
-      background:
-        radial-gradient(2px 2px at 20% 30%, #00cfff, transparent),
-        radial-gradient(1.5px 1.5px at 70% 60%, #00f6ff, transparent),
-        radial-gradient(2px 2px at 40% 80%, #00cfff, transparent),
-        radial-gradient(1px 1px at 85% 25%, #00f6ff, transparent);
-      opacity:.6;
-      animation: starShift 12s linear infinite;
+
+    .header-content {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      justify-content: space-between;
     }
-    @keyframes starShift { from{transform:translateY(0);} to{transform:translateY(-10%);} }
 
-    .header-content { position:relative; display:flex; justify-content:space-between; align-items:center; z-index:2; }
-    .logo { font-size:2rem; font-weight:700; color:#fff; text-shadow:0 0 6px #00cfff,0 0 12px #00cfff; }
-    .beta-badge { padding:6px 10px; border-radius:8px; font-weight:700; background:rgba(0,0,0,.25); color:#fff; text-shadow:0 0 6px #f0db4f,0 0 12px #f0db4f; box-shadow:0 0 12px rgba(240,219,79,.5); }
+    /* logo */
+    .header-content .logo {
+      color: #ffffff;
+      text-shadow: 0 0 6px #00cfff, 0 0 12px #00cfff, 0 0 22px #00cfff, 0 0 40px #00cfff;
+      font-size: 2rem;
+      font-weight: 700;
+    }
 
+    /* beta badge */
+    .beta-badge {
+      margin-left: 12px;
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-weight: 700;
+      color: #fff;
+      background: rgba(0,0,0,0.25);
+      text-shadow: 0 0 6px #f0db4f, 0 0 12px #f0db4f, 0 0 22px #f0db4f;
+      box-shadow: 0 0 12px rgba(240,219,79,0.5);
+      font-size: 0.95rem;
+    }
+
+    /* search */
+    .search-container input#searchBar,
+    .search-container select#sortOptions {
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid rgba(0,200,255,0.3);
+      background: rgba(0,0,0,0.55);
+      color: #e6fff9;
+      box-shadow: 0 0 8px rgba(0,200,255,0.2);
+    }
+    .search-container input#searchBar:focus {
+      box-shadow: 0 0 20px rgba(0,220,220,0.5);
+      outline: none;
+    }
+    .search-container { display: flex; gap: 8px; align-items: center; }
+
+    /* buttons */
     button {
-      background: rgba(0,200,255,.15);
-      border:1px solid rgba(0,200,255,.5);
-      border-radius:6px;
-      padding:.5rem 1rem;
-      color:#fff; cursor:pointer;
-      text-shadow:0 0 8px #00cfff;
-      transition:.25s;
+      background: rgba(0,200,255,0.15);
+      border: 1px solid rgba(0,200,255,0.5);
+      border-radius: 6px;
+      padding: 0.5rem 1rem;
+      color: #fff;
+      cursor: pointer;
+      text-shadow: 0 0 8px #00cfff;
+      box-shadow: 0 0 10px rgba(0,200,255,0.4);
+      transition: all 0.25s ease;
     }
-    button:hover { background:rgba(0,200,255,.3); box-shadow:0 0 18px #00cfff; }
+    button:hover {
+      background: rgba(0,200,255,0.3);
+      box-shadow: 0 0 18px rgba(0,200,255,0.7);
+      transform: translateY(-2px);
+    }
 
-    .zone-container h3, .zone-title h2 { text-shadow:0 0 6px #00cfff,0 0 12px #00cfff; }
+    /* neon game names */
+    .zone-container h3,
+    .zone-title h2 {
+      color: #fff;
+      text-shadow: 0 0 6px #00cfff, 0 0 12px #00cfff, 0 0 22px #00cfff, 0 0 40px #00cfff;
+    }
 
-    /* popup overlay for settings + chat */
-    #popupOverlay {
-      display:none; position:fixed; inset:0;
-      background:rgba(0,0,0,.7);
-      z-index:999;
-      justify-content:center; align-items:center;
+    /* neon summary titles */
+    details > summary {
+      font-size: 1.2rem;
+      font-weight: bold;
+      cursor: pointer;
+      text-shadow: 0 0 6px #00cfff, 0 0 12px #00cfff, 0 0 22px #00cfff;
     }
-    #popupFrame {
-      width:80%; height:80%; border:none;
-      border-radius:12px;
-      box-shadow:0 0 20px #00cfff;
+
+    /* footer links */
+    .footer-links a {
+      margin-right: 12px;
+      color: #00cfff;
+      text-decoration: none;
+      text-shadow: 0 0 6px #00cfff, 0 0 12px #00cfff;
+      transition: all 0.2s ease;
     }
-    #popupOverlay.active { display:flex; }
+    .footer-links a:hover {
+      color: #fff;
+      text-shadow: 0 0 12px #00cfff, 0 0 22px #00cfff;
+    }
+
+    /* rain */
+    .mgplus-rain {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .mgplus-rain .drop {
+      position: absolute;
+      top: -20vh;
+      width: 2px;
+      border-radius: 1px;
+      opacity: 0.35;
+      background: linear-gradient(180deg, rgba(0,255,255,0.6), rgba(0,255,255,0));
+      animation: mgplus-fall linear infinite;
+    }
+    @keyframes mgplus-fall { to { transform: translateY(140vh); } }
+
+    /* keep important UI above rain */
+    header, main, footer, #zoneViewer, #popupOverlay, .adsbygoogle { position: relative; z-index: 2; }
+    #zoneViewer { z-index: 3; }
   </style>
+
+  <!-- google scripts -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5521219086088837" crossorigin="anonymous"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-WX5VS54ZDW"></script>
+  <meta name="google-adsense-account" content="ca-pub-5521219086088837">
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date()); gtag('config', 'G-WX5VS54ZDW');
+  </script>
+  <script async src="https://fundingchoicesmessages.google.com/i/pub-5521219086088837?ers=1"></script>
+
+  <!-- game loader (unchanged) -->
+  <script src="https://cdn.jsdelivr.net/gh/gn-math/gn-math.github.io@main/gnmath.js"></script>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body class="dark-mode">
   <div class="mgplus-rain" aria-hidden="true"></div>
 
   <header>
     <div class="header-content">
-      <div style="display:flex;align-items:center;gap:8px;">
-        <div class="logo">MR GAMES</div>
-        <div class="beta-badge">MR GAMES+ BETA</div>
+      <div style="display:flex; align-items:center; gap:8px;">
+        <div class="logo">MR GAMES+ (BETA)</div>
       </div>
       <div class="search-container">
         <input type="text" id="searchBar" placeholder="Search zones..." oninput="filterZones()">
@@ -100,25 +192,23 @@
         </select>
       </div>
       <div class="control-buttons">
-        <button onclick="openSettings()">Settings</button>
-        <button onclick="openChat()">VChat</button>
-        <button onclick="openPartner()">Partner Code</button>
+        <button id="settings">Settings</button>
       </div>
     </div>
   </header>
 
   <main>
-    <details open>
-      <summary>Featured Zones</summary>
+    <details id="featuredZonesWrapper" open>
+      <summary id="allZonesSummary">Featured Zones</summary>
       <div id="featuredZones" class="zone-container"></div>
     </details>
-    <details open>
-      <summary>All Zones</summary>
+    <br><hr><br>
+    <details id="allZonesWrapper" open>
+      <summary id="allSummary">All Zones</summary>
       <div id="container">Loading...</div>
     </details>
   </main>
 
-  <!-- Viewer -->
   <div id="zoneViewer">
     <div class="zone-header">
       <div class="zone-title">
@@ -128,7 +218,7 @@
       </div>
       <div class="zone-controls">
         <button onclick="fullscreenZone()">Fullscreen</button>
-        <button onclick="aboutBlank()">New Tab</button>
+        <button onclick="aboutBlank()">Open in New Tab</button>
         <button onclick="downloadZone()">Download</button>
         <button onclick="closeZone()">Close</button>
       </div>
@@ -138,38 +228,79 @@
 
   <footer>
     <div class="footer-links">
-      <a href="#" onclick="showContact();return false;">Contact</a>
-      <a href="#" onclick="loadPrivacy();return false;">Privacy Policy</a>
+      <a href="#" onclick="showContact(); return false;">Contact</a>
+      <a href="#" onclick="loadPrivacy(); return false;">Privacy Policy</a>
+      <a href="javascript:saveData()">Export Data</a>
+      <a href="#" onclick="document.getElementById('importData').click(); return false;">Import Data</a>
+      <input type="file" id="importData" style="display:none;" onchange="loadData(event)">
     </div>
   </footer>
+<style>
+  /* override any old red bar styles */
+  header {
+    position: relative;
+    background: #000 !important; /* force black */
+    padding: 12px;
+    border: 2px solid #00cfff;
+    border-radius: 10px;
+    box-shadow:
+      0 0 12px #00cfff,
+      0 0 24px rgba(0,200,255,0.7),
+      inset 0 0 10px rgba(0,200,255,0.4);
+    margin: 8px;
+    overflow: hidden; /* so stars don’t spill out */
+  }
 
-  <!-- popup overlay -->
-  <div id="popupOverlay"><iframe id="popupFrame"></iframe></div>
+  /* neon star background inside header */
+  header::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(2px 2px at 20% 30%, #00cfff, transparent),
+      radial-gradient(1.5px 1.5px at 70% 60%, #00f6ff, transparent),
+      radial-gradient(2px 2px at 40% 80%, #00cfff, transparent),
+      radial-gradient(1px 1px at 85% 25%, #00f6ff, transparent),
+      radial-gradient(2px 2px at 10% 70%, #00cfff, transparent);
+    background-size: cover;
+    animation: starShift 12s linear infinite;
+    opacity: 0.6;
+  }
 
-  <!-- scripts -->
+  @keyframes starShift {
+    from { transform: translateY(0); }
+    to { transform: translateY(-10%); }
+  }
+
+  .header-content {
+    position: relative; /* keep content above stars */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 2;
+  }
+</style>
+
+  <!-- site JS -->
   <script src="script.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/gn-math/gn-math.github.io@main/gnmath.js"></script>
-
   <script>
-    function openSettings(){
-      const popup=document.getElementById('popupOverlay');
-      const frame=document.getElementById('popupFrame');
-      frame.src='settings.html';
-      popup.classList.add('active');
-    }
-    function openChat(){
-      const popup=document.getElementById('popupOverlay');
-      const frame=document.getElementById('popupFrame');
-      frame.src='https://your-firebase-chat-url'; // replace with your chat.html
-      popup.classList.add('active');
-    }
-    function openPartner(){
-      const code = Math.random().toString(36).substring(2,8).toUpperCase();
-      alert("Your Partner Code: "+code+"\nShare this with a friend!");
-    }
-    document.getElementById('popupOverlay').addEventListener('click', e=>{
-      if(e.target.id==='popupOverlay'){ e.target.classList.remove('active'); }
-    });
+    const search = new URLSearchParams(window.location.search);
+    if (search.get('privacy')) { loadPrivacy(); }
+
+    (function makeRain(){
+      const wrap = document.querySelector('.mgplus-rain');
+      if(!wrap) return;
+      const count = 80;
+      for (let i=0;i<count;i++){
+        const d=document.createElement('span');
+        d.className='drop';
+        d.style.left=(Math.random()*100)+'vw';
+        d.style.height=(10+Math.random()*24)+'px';
+        d.style.animationDuration=(1.2+Math.random()*2.8)+'s';
+        d.style.animationDelay=(Math.random()*3)+'s';
+        wrap.appendChild(d);
+      }
+    })();
   </script>
 </body>
 </html>
